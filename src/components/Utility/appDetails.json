@@ -1,0 +1,99 @@
+[
+  {
+    "title": "Funds Transfer",
+    "identifier": "fundstransfer",
+    "thumbnail": "./appJSONs/thumbnails/image1.jpg",
+    "keywords": "fundstransfer banking digital customerfacing retail rbwm allscreens",
+    "content" : {
+      "descriptionText": "Description text goes here .......maximum limit 200 chars",
+      "additionalResources": [
+         "./appJSONs/resources/fundstransfer/image1",
+        "./appJSONs/resources/fundstransfer/image2",
+        "./appJSONs/resources/fundstransfer/video1"
+      ],
+      "githubLink" : "https://github.com/snehaagarwal6108/fundTranser.git",
+      "nexusLink" : "http://nexus/abc"
+    }
+  },
+  {
+    "title": "Login",
+    "identifier": "login",
+    "thumbnail": "./thumbnails/fundstransfer",
+    "keywords": "input userlogin login allscreens",
+    "content" : {
+      "descriptionText": "Description text goes here .......maximum limit 200 chars",
+      "additionalResources": [
+        "./appJSONs/resources/fundstransfer/image1",
+        "./appJSONs/resources/fundstransfer/image2",
+        "./appJSONs/resources/fundstransfer/video1"
+      ],
+      "githubLink" : "https://github.com/snehaagarwal6108/loginPage.git",
+      "nexusLink" : "http://nexus/abc"
+    }
+  },
+  {
+    "title": "Calendar",
+    "identifier": "calendar",
+    "thumbnail": "./thumbnails/calendar",
+    "keywords": "calendar date dateandtime datetime",
+    "content" : {
+      "descriptionText": "Description text goes here .......maximum limit 200 chars",
+      "additionalResources": [
+        "./appJSONs/resources/fundstransfer/image1",
+        "./appJSONs/resources/fundstransfer/image2",
+        "./appJSONs/resources/fundstransfer/video1"
+      ],
+      "githubLink" : "https://github.com/snehaagarwal6108/calendar.git",
+      "nexusLink" : "http://nexus/abc"
+    }
+  },
+{
+    "title": "Bill Payment",
+    "identifier": "billpayment",
+    "thumbnail": "./appJSONs/thumbnails/image1.jpg",
+    "keywords":"billpayment digital retail rbwm allscreens",
+"content" : {
+      "descriptionText": "Description text goes here .......maximum limit 200 chars",
+      "additionalResources": [
+        "./appJSONs/resources/fundstransfer/image1",
+        "./appJSONs/resources/fundstransfer/image2",
+        "./appJSONs/resources/fundstransfer/video1"
+      ],
+      "githubLink" : "https://github.com/pallaviteli/stencil",
+      "nexusLink" : "http://nexus/abc"
+    }
+  },
+{
+    "title": "Mailbox",
+    "thumbnail": "./appJSONs/thumbnails/image1.jpg",
+    "keywords": "mailbox email notification",
+    "identifier": "mailbox",
+"content" : {
+      "descriptionText": "Description text goes here .......maximum limit 200 chars",
+      "additionalResources": [
+        "./appJSONs/resources/fundstransfer/image1",
+        "./appJSONs/resources/fundstransfer/image2",
+        "./appJSONs/resources/fundstransfer/video1"
+      ],
+      "githubLink" : "https://github.com/snehaagarwal6108/MailBox.git",
+      "nexusLink" : "http://nexus/abc"
+    }
+  },
+{
+    "title": "Pin Reset",
+    "identifier": "pinreset",
+    "thumbnail": "./appJSONs/thumbnails/image1.jpg",
+    "keywords":
+      "banking pinreset digital retail rbwm allscreens",
+"content" : {
+      "descriptionText": "Description text goes here .......maximum limit 200 chars",
+      "additionalResources": [
+        "./appJSONs/resources/fundstransfer/image1",
+        "./appJSONs/resources/fundstransfer/image2",
+        "./appJSONs/resources/fundstransfer/video1"
+      ],
+      "githubLink" : "https://github.com/pallaviteli/stencil",
+      "nexusLink" : "http://nexus/abc"
+    }
+  }
+]
