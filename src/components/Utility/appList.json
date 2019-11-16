@@ -1,36 +1,36 @@
 [
   {
-    "title": "Funds Transfer",
+    "title": "ROC",
     "symbol": "./appJSONs/thumbnails/image1.jpg",
     "keywords":
-      "banking fundstransfer retail rbwm allscreens"
+      "retain our customers ROC roc retail rbwm allscreens"
   },
   {
-    "title": "Login",
+    "title": "Hackstar Migrators",
     "symbol": "./appJSONs/thumbnails/image1.jpg",
-    "keywords": "input userlogin login allscreens"
+    "keywords": "hackstar migrators banking gbm allscreens"
   },
   {
-    "title": "Calendar",
+    "title": "FX Combine",
     "symbol": "./appJSONs/thumbnails/image1.jpg",
-    "keywords": "calendar date dateandtime datetime"
+    "keywords": "FX exchange foreign rbwm combine allscreens"
   },
   {
     "title": "Mailbox",
     "symbol": "./appJSONs/thumbnails/image1.jpg",
-    "keywords": "mailbox email notification"
+    "keywords": "mailbox email notification gbm allscreens AI ai"
   },
 {
-    "title": "Bill Payment",
+    "title": "Smart Payment",
     "symbol": "./appJSONs/thumbnails/image1.jpg",
     "keywords":
-      "billpayment digital retail rbwm allscreens"
+      "billpayment bill smart payment payments digital retail rbwm allscreens  AI ai"
   },
 {
-    "title": "Pin Reset",
+    "title": "Alpha Wallet",
     "symbol": "./appJSONs/thumbnails/image1.jpg",
     "keywords":
-      "banking pinreset digital retail rbwm allscreens"
+      "banking alpha wallet payment payments Wallet Alpha digital retail rbwm allscreens"
   }
  
 ]

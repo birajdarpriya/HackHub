@@ -1,5 +1,29 @@
 import React, { Component } from 'react';
-
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Col,
+  Collapse,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Fade,
+  Form,
+  FormGroup,
+  FormText,
+  FormFeedback,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButtonDropdown,
+  InputGroupText,
+  Label,
+  Row,
+} from 'reactstrap';
 import '../../theme/bower_components/bootstrap/dist/css/bootstrap.min.css';
 import '../../theme/bower_components/font-awesome/css/font-awesome.min.css';
 import '../../theme/bower_components/Ionicons/css/ionicons.min.css';
@@ -14,12 +38,20 @@ import '../../theme/bower_components/bootstrap-daterangepicker/daterangepicker.c
 import '../../theme/dist/css/skins/_all-skins.min.css';
 import '../../theme/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css';
 // import '../../theme/bower_components/jquery/dist/jquery.min.js';
-
+import { addNewApp} from "../Utility/filteringApps";
 
 class AddApp extends Component {
   constructor(props) {
     super(props);
-    this.state = { geritScore: 0 };
+    this.state = { geritScore: 0 ,
+	collapse: true,
+      fadeIn: true,
+      timeout: 300,
+      max_chars : 500,
+      selectedFiles : [],
+      inputs: ['input-0'],
+      hashTags : ['hashtag-0']}
+
   }
 
   getScore = () => {
@@ -27,12 +59,30 @@ class AddApp extends Component {
   }
 
   addApplication = (e) => {
-    var appObj = {};
-    appObj.content = {};
-    appObj.title = this.state.appTitle;
-    appObj.gitHubLink = this.state.gitLink;
-    appObj.nexusLink = this.state.nexusLink;
-    appObj.content.descriptionText = this.state.appDesc;
+     
+    var newAppObj = {};
+    newAppObj.title = this.state.projectName;
+    newAppObj.symbol = "./appJSONs/thumbnails/image1.jpg"
+    newAppObj.keywords = this.state.projectName;
+
+   var appDetailsObj =  {
+    "title": this.state.projectName,
+    "identifier": this.state.projectName.toLowerCase(),
+    "thumbnail": "./thumbnails/fundstransfer",
+    "keywords": this.state.projectName.toLowerCase(),
+    "content" : {
+      "descriptionText": this.state.projectDesc,
+      "additionalResources": [
+        "./appJSONs/resources/fundstransfer/image1",
+        "./appJSONs/resources/fundstransfer/image2",
+        "./appJSONs/resources/fundstransfer/video1"
+      ],
+      "githubLink" : this.state.projectVersion,
+      "nexusLink" : this.state.teamName
+    }
+  };
+  
+    addNewApp(newAppObj, appDetailsObj);
    this.props.history.push("/dashboard");
   }
 
@@ -51,11 +101,65 @@ class AddApp extends Component {
     console.log(this.state);
   }
 
+ appendInput() {
+        if(this.state.inputs.length < 5) {
+        	var newInput = `input-${this.state.inputs.length}`;
+        	this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
+	}
+  }
+
+createNewBadge(name) {
+              return <Badge color="success" className="float-right">name</Badge>;
+}
+ 
+ appendHashTags(event) {
+	 if(event.charCode === 13){
+                debugger;
+                
+	  	var newInput = `hashtag-${this.state.hashTags.length}`;
+        	this.setState(prevState => ({ hashTags: prevState.hashTags.concat([newInput]) }));
+	  }     
+  }
+
+  handleDescChange(event) {
+        this.handleChange(event);
+        var input = event.target.value;
+        this.setState({
+            chars_left: this.state.max_chars - input.length
+  	});
+   }
+
+onFileSelect(event){
+    this.handleChange(event);
+
+    var files = event.target.files
+      if(files.length < 5){
+         this.setState({
+         selectedFile: files,
+      	 loaded: 0,
+      })
+   } else {
+    event.target.value = null // discard selected file
+   alert("More than 4 files selected");
+  }
+}
+
+onFileUpload () {
+    const data = new FormData();
+     for(var x = 0; x<this.state.selectedFile.length; x++) {
+       data.append('file', this.state.selectedFile[x]);
+   }
+   
+
+       this.setState({"fileData" : data});
+}
+
+
   render() {
     return (
       <div className="wrapper">
         <header className="main-header">
-          <a href="index2.html" className="logo">
+          <a href="/dashboard" className="logo">
             <span className="logo-mini"><b>A</b>LT</span>
             <span className="logo-lg"><b>HackHub</b></span>
           </a>
@@ -78,10 +182,10 @@ class AddApp extends Component {
           <section className="sidebar">
             <div className="user-panel">
               <div className="pull-left image">
-                <img src={require("../../theme/dist/img/user2-160x160.jpg")} className="img-circle" alt="User Image" />
+                <img src={require("../../theme/dist/img/avatar3.png")} className="img-circle" alt="User Image" />
               </div>
               <div className="pull-left info">
-                <p>Priya Indi</p>
+                <p>Priya Birajdar</p>
                 <a href="#"><i className="fa fa-circle text-success"></i> Online</a>
               </div>
             </div>
@@ -130,47 +234,175 @@ class AddApp extends Component {
               <li className="active">General Elements</li>
             </ol> */}
           </section>
-          <section className="content">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="box box-primary">
-                  <div className="box-header with-border">
-                    <h3 className="box-title">Application Details</h3>
-                  </div>
-                  <form role="form" name="addAppFrm">
-                    <div className="box-body">
-                      <div className="form-group">
-                        <label htmlFor="appTitle">Application Title (It should be unique)</label>
-                        <input type="text" className="form-control" name="appTitle" id="appTitle" placeholder="Enter application name" onChange={this.handleChange} />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="gitLink">GitHub Repository Link</label>
-                        <input type="url" className="form-control" name="gitLink" id="gitLink" placeholder="Provide gihub repo url here" onChange={this.handleChange} />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="nexusLink">Nexus Package Link</label>
-                        <input type="url" className="form-control" name="nexusLink" id="nexusLink" placeholder="Provide nexus package url here" onChange={this.handleChange} />
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="appDesc">Application Description</label>
-                        <textarea className="form-control" name="appDesc" id="appDesc" placeholder="Provide application information here" onChange={this.handleChange} />
-                      </div>
-                      <div className="checkbox">
-                        <label>
-                          <input type="checkbox" id="agreeCheck" name="agreeCheck" onChange={this.handleChange} /> I agree
-                      </label>
-                      </div>
-                    </div>
-                    <div className="box-footer">
-                      <button type="submit" className="btn btn-primary" onClick={this.getScore}>Check Gerit Score</button>{this.state.getScore}
-                      {this.state.getScore > 0 && <span>+{this.state.getScore}</span>}
-                      <button type="submit" disabled={!this.state.agreeCheck} className="btn btn-primary" style={{ float: "right" }}onClick={this.addApplication}>Submit</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </section>
+          
+        <section className="content">
+    <form role="form" name="addAppFrm">
+        <Row>
+          <Col xs="12" sm="6">
+            <Card>
+              <CardHeader>
+                <strong>Project Details</strong>
+                <small> Highlights</small>
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <Col xs="12">
+                    <FormGroup>
+                      <Label htmlFor="projectName">Name</Label>
+                      <Input type="text" id="projectName"name="projectName" placeholder="Enter project name" onChange={this.handleChange} required />
+                    </FormGroup>
+		  <FormGroup row>
+                    <Col md="3">
+                      <Label>Project Id </Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <p className="form-control-static">-System-generated-id</p>
+                    </Col>
+                  </FormGroup>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col xs="12">
+                    <FormGroup>
+                      <Label htmlFor="projectVersion">Vesion</Label>
+                      <Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1"  onChange={this.handleChange} required />
+                    </FormGroup>
+		    <FormGroup row>
+                    <Col md="3">
+                      <Label htmlFor="projectDesc">Description</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input type="textarea" name="projectDesc" id="projectDesc" rows="9"
+                             placeholder="Keep it short and simple..." onChange={this.handleDescChange.bind(this)} />
+		      <p>Characters Left: {this.state.chars_left}</p>
+                    </Col>
+                  </FormGroup>
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col xs="12" sm="6">
+            <Card>
+              <CardHeader>
+                <strong>Team</strong>
+                <small> Details</small>
+              </CardHeader>
+              <CardBody>
+                <FormGroup>
+                  <Label htmlFor="teamName">Team Name</Label>
+                  <Input type="text" id="teamName" name ="teamName" placeholder="Enter your team name" onChange={this.handleChange} required />
+                </FormGroup>
+                <FormGroup>
+                  <Label htmlFor="teamMembers">Team Name</Label>
+		   <div id="dynamicInput">
+                       {this.state.inputs.map(input => <Input  type="text" id="teamMembers" placeholder="Enter team member" key={input}/>)}
+                   </div>
+                  <button onClick={ () => this.appendInput() }>
+                    +
+               </button>
+                </FormGroup>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12" md="6">
+            <Card>
+              <CardHeader>
+                <strong>Documents</strong> Attachments
+              </CardHeader>
+              <CardBody>
+                <Form action="" method="post" encType="multipart/form-data" className="form-horizontal">
+                  
+                 
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label htmlFor="file-input">File input</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Input type="file" id="file-input" name="file-input"  onChange={this.handleChange} />
+                    </Col>
+                  </FormGroup>
+              
+                  <FormGroup row>
+                    <Col md="3">
+                      <Label htmlFor="file-multiple-input">Multiple File input</Label>
+                    </Col>
+                    <Col xs="12" md="9" className="files">
+                      <Input  type="file" id="file-multiple-input" name="file-multiple-input"  onChange={this.onFileSelect.bind(this)} multiple />
+                    </Col>
+                   <Col>
+                       <button type="button" className="btn btn-success btn-block" onClick={this.onFileUpload.bind(this)}>Upload</button>
+                  </Col>
+                  </FormGroup>
+                  <FormGroup row >
+                    <Col md="3">
+                      <Label className="custom-file" htmlFor="custom-file-input">Custom file input</Label>
+                    </Col>
+                    <Col xs="12" md="9">
+                      <Label className="custom-file">
+                        <Input className="custom-file" type="file" id="custom-file-input" name="file-input" onChange={this.handleChange}/>
+                        <span className="custom-file-control"></span>
+                      </Label>
+                    </Col>
+                  </FormGroup>
+                </Form>
+              </CardBody>
+              { /*<CardFooter>
+                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
+                <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+              </CardFooter> */}
+            </Card>
+          </Col>
+          <Col xs="12" md="6">
+            <Card>
+              <CardHeader>
+                <strong>Categories</strong>
+              </CardHeader>
+              <CardBody>
+                <Form action="" method="post" className="form-horizontal">
+                  <FormGroup row>
+                   <div id="teamMemberInputDiv">
+                       {this.state.hashTags.map(hashTag => <Badge  type="text" id="teamMembers" placeholder="Enter team member" key={hashTag}>{hashTag} </Badge>)}
+                   </div>
+ 
+                
+		       <div className="card-header-actions">
+                  	  {this.componentList}
+               	       </div>
+		   </FormGroup>
+		   <FormGroup row>
+                        <Label htmlFor="prependedInput">Keywords</Label>
+                        <div className="controls">
+                          <InputGroup className="input-prepend">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText>#</InputGroupText>
+                            </InputGroupAddon>
+                            <Input id="prependedInput" size="16" type="text" onKeyPress={this.appendHashTags.bind(this)}/>
+                          </InputGroup>
+                          <p className="help-block">Keep adding keywords and hashtags</p>
+                        </div>
+
+                  </FormGroup>
+                </Form>
+              </CardBody>
+              <CardFooter>
+                
+              </CardFooter>
+            </Card>
+           
+          </Col>
+        </Row>
+        <div className="box-footer">
+            <button type="submit" className="btn btn-primary" onClick={this.getScore}>Check Gerit Score</button>{this.state.getScore}
+            {this.state.getScore > 0 && <span>+{this.state.getScore}</span>}
+            <button type="submit" className="btn btn-primary" style={{ float: "right" }}onClick={this.addApplication}>Submit</button>
+        </div>
+    </form>
+</section>
+
         </div>
         <footer className="main-footer">
           <div className="pull-right hidden-xs">

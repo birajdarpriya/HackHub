@@ -13,7 +13,7 @@ class AppResults extends PureComponent {
   }
 
   componentWillUnmount() {
-    alert("unmounted !!!");
+   // alert("unmounted !!!");
   }
 
   render() {

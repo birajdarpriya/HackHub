@@ -18,6 +18,7 @@ import AppResults from "../AppResults/AppResults";
 import { filterApps, fetchApplcationDetails } from "../Utility/filteringApps";
 import AppDetails from "../AppResults/AppDetails";
 
+
 class Dashboard extends Component {
 
   constructor(props) {
@@ -58,6 +59,14 @@ class Dashboard extends Component {
     });
   }
 
+ handleCategorySelected = department => {
+     this.setState({
+      filterApps: filterApps(department.target.id === "all" ? "" : department.target.id, 20),
+      searchString: department.target.id
+    });
+
+  }
+
   handleAppClose = event => {
     this.setState({
       showApp: false
@@ -73,7 +82,7 @@ class Dashboard extends Component {
 
         {/*Header Start*/}
         <header className="main-header">
-          <a href="index2.html" className="logo">
+          <a href="/dashboard" className="logo">
             <span className="logo-mini"><b>A</b>LT</span>
             <span className="logo-lg"><b>HackHub</b></span>
           </a>
@@ -118,8 +127,9 @@ class Dashboard extends Component {
                   </span>
                 </a>
                 <ul className="treeview-menu">
-                  <li className="active"><a href="index.html"><i className="fa fa-circle-o"></i> RBWM</a></li>
-                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> GBM</a></li>
+                  <li className="active"><a href="#" id = "rbwm" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> RBWM</a></li>
+                  <li><a href="#" id="gbm" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> GBM</a></li>
+                  <li><a href="#" id ="all" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> All</a></li>
                 </ul>
               </li>
               <li className="treeview">
