@@ -87,7 +87,7 @@ class Dashboard extends Component {
 
     var headers = new Headers();
 
-    fetch('http://hackhub-001.appspot.com/hackhub/' + id)
+    fetch('http://hackhub-001.appspot.com/books/hackhub/' + id)
       .then(res => res.json())
       .then(data => {
         console.log("handleAppSelected")
