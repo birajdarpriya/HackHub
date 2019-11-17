@@ -29,6 +29,11 @@ export function filterAppsData(data, searchText, maxResults) {
     .slice(0, maxResults);
 }
 
+export function addNewApp(newAppObj, appDetailsObj) {
+ appList.push(newAppObj);
+ appDetails.push(appDetailsObj);
+}
+
 export function fetchKeywords(searchText, maxResults) {
   return appList
     .filter(emoji => {
