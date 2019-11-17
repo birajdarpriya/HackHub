@@ -50,7 +50,7 @@ class AddApp extends Component {
       max_chars : 500,
       selectedFiles : [],
       inputs: ['input-0'],
-      hashTags : ['hashtag-0']}
+      hashTags : ['hackhub']}
 
   }
 
@@ -86,6 +86,12 @@ class AddApp extends Component {
    this.props.history.push("/dashboard");
   }
 
+handleBlur = (e) => {
+    let value, name;
+    value = e.target.value;
+    name = e.target.name;
+   debugger;
+  }
   handleChange = (e) => {
     let value, name;
     value = e.target.value;
@@ -113,11 +119,10 @@ createNewBadge(name) {
 }
  
  appendHashTags(event) {
-	 if(event.charCode === 13){
-                debugger;
-                
-	  	var newInput = `hashtag-${this.state.hashTags.length}`;
-        	this.setState(prevState => ({ hashTags: prevState.hashTags.concat([newInput]) }));
+	 if(event.charCode === 13){                
+	  	var newHashTag = event.target.value;
+        	this.setState(prevState => ({ hashTags: prevState.hashTags.concat([newHashTag]) }));
+		event.target.value='';
 	  }     
   }
 
@@ -245,41 +250,25 @@ onFileUpload () {
                 <small> Highlights</small>
               </CardHeader>
               <CardBody>
-                <Row>
-                  <Col xs="12">
                     <FormGroup>
                       <Label htmlFor="projectName">Name</Label>
                       <Input type="text" id="projectName"name="projectName" placeholder="Enter project name" onChange={this.handleChange} required />
                     </FormGroup>
-		  <FormGroup row>
-                    <Col md="3">
+		  <FormGroup>
                       <Label>Project Id </Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <p className="form-control-static">-System-generated-id</p>
-                    </Col>
+                      <p className="form-control-static">system-generated-id</p>
                   </FormGroup>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col xs="12">
                     <FormGroup>
-                      <Label htmlFor="projectVersion">Vesion</Label>
-                      <Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1"  onChange={this.handleChange} required />
+                      <Label htmlFor="projectVersion">Version</Label>
+                      <Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1" pattern="(\d+\.)(\d+\.)(\d+\.)(\d)" onChange={this.handleChange}  onBlur={this.handleBlur} required />
                     </FormGroup>
-		    <FormGroup row>
-                    <Col md="3">
+		    <FormGroup >
                       <Label htmlFor="projectDesc">Description</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="textarea" name="projectDesc" id="projectDesc" rows="9"
+                      <Input type="textarea" name="projectDesc" id="projectDesc" rows="9" maxLength = "500"
                              placeholder="Keep it short and simple..." onChange={this.handleDescChange.bind(this)} />
 		      <p>Characters Left: {this.state.chars_left}</p>
-                    </Col>
+
                   </FormGroup>
-                  </Col>
-                </Row>
               </CardBody>
             </Card>
           </Col>
@@ -295,11 +284,11 @@ onFileUpload () {
                   <Input type="text" id="teamName" name ="teamName" placeholder="Enter your team name" onChange={this.handleChange} required />
                 </FormGroup>
                 <FormGroup>
-                  <Label htmlFor="teamMembers">Team Name</Label>
+                  <Label htmlFor="teamMembers">Team Members</Label>
 		   <div id="dynamicInput">
                        {this.state.inputs.map(input => <Input  type="text" id="teamMembers" placeholder="Enter team member" key={input}/>)}
                    </div>
-                  <button onClick={ () => this.appendInput() }>
+                  <button type="button" id="addTeamMember" onClick={ () => this.appendInput() }>
                     +
                </button>
                 </FormGroup>
@@ -314,41 +303,14 @@ onFileUpload () {
                 <strong>Documents</strong> Attachments
               </CardHeader>
               <CardBody>
-                <Form action="" method="post" encType="multipart/form-data" className="form-horizontal">
-                  
-                 
-                  <FormGroup row>
-                    <Col md="3">
-                      <Label htmlFor="file-input">File input</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="file" id="file-input" name="file-input"  onChange={this.handleChange} />
-                    </Col>
-                  </FormGroup>
-              
-                  <FormGroup row>
-                    <Col md="3">
+                  <FormGroup className="files">
                       <Label htmlFor="file-multiple-input">Multiple File input</Label>
-                    </Col>
-                    <Col xs="12" md="9" className="files">
+
                       <Input  type="file" id="file-multiple-input" name="file-multiple-input"  onChange={this.onFileSelect.bind(this)} multiple />
-                    </Col>
-                   <Col>
-                       <button type="button" className="btn btn-success btn-block" onClick={this.onFileUpload.bind(this)}>Upload</button>
-                  </Col>
+                       <button type="button" className="btn btn-success pull-right" onClick={this.onFileUpload.bind(this)}>Upload</button>
+
                   </FormGroup>
-                  <FormGroup row >
-                    <Col md="3">
-                      <Label className="custom-file" htmlFor="custom-file-input">Custom file input</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Label className="custom-file">
-                        <Input className="custom-file" type="file" id="custom-file-input" name="file-input" onChange={this.handleChange}/>
-                        <span className="custom-file-control"></span>
-                      </Label>
-                    </Col>
-                  </FormGroup>
-                </Form>
+                  
               </CardBody>
               { /*<CardFooter>
                 <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
@@ -362,10 +324,9 @@ onFileUpload () {
                 <strong>Categories</strong>
               </CardHeader>
               <CardBody>
-                <Form action="" method="post" className="form-horizontal">
-                  <FormGroup row>
-                   <div id="teamMemberInputDiv">
-                       {this.state.hashTags.map(hashTag => <Badge  type="text" id="teamMembers" placeholder="Enter team member" key={hashTag}>{hashTag} </Badge>)}
+                  <FormGroup>
+                   <div id="hashTagsDiv">
+                       {this.state.hashTags.map(hashTag => <Badge  type="text" id="hashTags" key={hashTag}>{hashTag} </Badge>)}
                    </div>
  
                 
@@ -373,20 +334,20 @@ onFileUpload () {
                   	  {this.componentList}
                	       </div>
 		   </FormGroup>
-		   <FormGroup row>
+		   <FormGroup >
                         <Label htmlFor="prependedInput">Keywords</Label>
                         <div className="controls">
                           <InputGroup className="input-prepend">
                             <InputGroupAddon addonType="prepend">
                               <InputGroupText>#</InputGroupText>
                             </InputGroupAddon>
-                            <Input id="prependedInput" size="16" type="text" onKeyPress={this.appendHashTags.bind(this)}/>
+                            <Input id="prependedInput" size="16" type="text" onKeyPress={ (event) =>this.appendHashTags(event) }/>
                           </InputGroup>
                           <p className="help-block">Keep adding keywords and hashtags</p>
                         </div>
 
                   </FormGroup>
-                </Form>
+
               </CardBody>
               <CardFooter>
                 
@@ -396,9 +357,9 @@ onFileUpload () {
           </Col>
         </Row>
         <div className="box-footer">
-            <button type="submit" className="btn btn-primary" onClick={this.getScore}>Check Gerit Score</button>{this.state.getScore}
+            <button type="button" className="btn btn-primary" onClick={this.getScore}>Check Gerit Score</button>{this.state.getScore}
             {this.state.getScore > 0 && <span>+{this.state.getScore}</span>}
-            <button type="submit" className="btn btn-primary" style={{ float: "right" }}onClick={this.addApplication}>Submit</button>
+            <button type="button" className="btn btn-primary" style={{ float: "right" }} onClick={this.addApplication}>Submit</button>
         </div>
     </form>
 </section>

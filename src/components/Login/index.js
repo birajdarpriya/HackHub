@@ -5,8 +5,7 @@ import '../../theme/bower_components/font-awesome/css/font-awesome.min.css';
 import '../../theme/bower_components/Ionicons/css/ionicons.min.css';
 import '../../theme/dist/css/AdminLTE.css';
 import '../../theme/plugins/iCheck/square/blue.css';
-
-
+import config from '../Utility/config';
 class Login extends Component {
 
   constructor(props){
@@ -19,10 +18,14 @@ class Login extends Component {
   componentDidMount() {
     //Initialize the Gapi client
     let that = this;
-    alert("API calls")
-    window.gapi.load("client:auth2", function () {
-       /// window.gapi.auth2.init({client_id: that.client_id});
-    });
+
+    /*window.gapi.load("client:auth2", function () {
+
+       window.gapi.auth2.init({client_id: config.client_id}).then(function(){
+                alert("Initialized!!");
+		this.authenticate();
+       });
+    });*/
   }
 
 //Authenticate the client
@@ -34,7 +37,8 @@ class Login extends Component {
             "latform https://www.googleapis.com/auth/cloud-platform.read-only"
       })
       .then(function () {
-        that.loadClient()
+        //that.loadClient()
+       alert("authenticated");
       }, function (err) {
         console.error("Error signing in", err);
       });
