@@ -15,14 +15,34 @@ import '../../theme/dist/css/skins/_all-skins.min.css';
 import '../../theme/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css';
 import SearchApp from "../AppResults/SearchApp";
 import AppResults from "../AppResults/AppResults";
-import { filterApps, fetchApplcationDetails } from "../Utility/filteringApps";
+import HackHubList from "../AppResults/HackHubList";
+import { filterApps, filterAppsData, fetchApplcationDetails, filterhackhublist } from "../Utility/filteringApps";
 import AppDetails from "../AppResults/AppDetails";
+import HackHubDetail from "../AppResults/HackHubDetail";
 
 class Dashboard extends Component {
 
+  componentDidMount () {
+    fetch('http://hackhub-001.appspot.com/books/hackhub')
+      .then(res => res.json())
+      .then(this.onLoad);
+  }
+
+  onLoad = (data) => {
+    this.setState({
+      apps: data,
+      filterApps: filterhackhublist(data, this.state.searchString, 20),
+      appDetailsData: fetchApplcationDetails("Fund Transfer"),
+      searchString: "",
+      showApp: false
+    });
+
+  }
+
+
+
   constructor(props) {
     super(props);
-    console.log("ggggggggg", window.location.href);
     let pageTitle = "";
     let url = window.location.href;
     let page = url.substr(url.lastIndexOf('/') + 1);
@@ -37,25 +57,47 @@ class Dashboard extends Component {
     }
 
     this.state = {
-      filterApps: filterApps("", 20),
-      appDetailsData: fetchApplcationDetails(pageTitle),
+      filterApps: "",
+      appDetailsData: "",
       searchString: "",
-      showApp: showAppState
+      showApp: false
     };
+
   }
 
   handleSearchChange = event => {
     this.setState({
-      filterApps: filterApps(event.target.value, 20),
-      searchString: event.target.value
+      //filterApps: filterApps(event.target.value, 20),
+      searchString: event.target.value,
+      filterApps: filterhackhublist(this.state.apps, event.target.value, 20)
+
     });
+    /*
+    fetch('http://127.0.0.1:8080/books/appList')
+      .then(res => res.json())
+      .then(this.onLoad);
+    */
   };
 
-  handleAppSelected = title => {
-    this.setState({
-      showApp: true,
-      appDetailsData: fetchApplcationDetails(title),
-    });
+  handleAppSelected = id => {
+    console.log(id)
+    var payload = {
+      id: id
+    };
+
+    var headers = new Headers();
+
+    fetch('http://hackhub-001.appspot.com/hackhub/' + id)
+      .then(res => res.json())
+      .then(data => {
+        console.log("handleAppSelected")
+        console.log(data)
+
+        this.setState({
+          appDetailsData: data,
+          showApp: true
+        });
+      });
   }
 
   handleAppClose = event => {
@@ -67,13 +109,24 @@ class Dashboard extends Component {
   onAdd = () => {
     this.props.history.push("/add-app");
   }
-  render() {
+
+  render () {
+    return this.state.filterApps ?
+      this.renderData() :
+      this.renderLoading()
+  }
+
+  renderLoading () {
+    return <div>Loading...</div>
+  }
+
+  renderData() {
     return (
       <div className="wrapper">
 
         {/*Header Start*/}
         <header className="main-header">
-          <a href="index2.html" className="logo">
+          <a href="/dashboard" className="logo">
             <span className="logo-mini"><b>A</b>LT</span>
             <span className="logo-lg"><b>HackHub</b></span>
           </a>
@@ -160,7 +213,7 @@ class Dashboard extends Component {
 
             <section className="content">
               <div className="row">
-                <AppResults onSelectApp={this.handleAppSelected} searchResults={this.state.filterApps} />
+                <HackHubList onSelectApp={this.handleAppSelected} searchResults={this.state.filterApps} />
               </div>
             </section>
           </div>
@@ -168,7 +221,7 @@ class Dashboard extends Component {
             <div>
               <section className="content">
                 <div className="row">
-                  <AppDetails appDetailsData={this.state.appDetailsData} onCloseApp={this.handleAppClose} />
+                  <HackHubDetail appDetailsData={this.state.appDetailsData} onCloseApp={this.handleAppClose} />
                 </div>
               </section>
             </div>
