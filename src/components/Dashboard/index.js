@@ -80,19 +80,9 @@ class Dashboard extends Component {
   };
 
   handleAppSelected = id => {
-    console.log(id)
-    var payload = {
-      id: id
-    };
-
-    var headers = new Headers();
-
     fetch('http://hackhub-001.appspot.com/books/hackhub/' + id)
       .then(res => res.json())
       .then(data => {
-        console.log("handleAppSelected")
-        console.log(data)
-
         this.setState({
           appDetailsData: data,
           showApp: true

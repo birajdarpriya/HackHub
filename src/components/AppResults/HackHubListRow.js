@@ -26,7 +26,7 @@ constructor() {
 
   render() {
     const codePointHex = this.props.symbol.codePointAt(0).toString(16);
-      console.log(this.props.symbol);
+      
     const src = this.props.symbol;
     return (
       <div className="col-lg-3 col-xs-6" onClick={this.onSelectApp}>

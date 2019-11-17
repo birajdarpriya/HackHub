@@ -49,9 +49,9 @@ class AddApp extends Component {
       timeout: 300,
       max_chars : 500,
       selectedFiles : [],
-      inputs: ['input-0'],
-      hashTags : ['hackhub']}
-
+      inputs: ['teammember1'],
+      hashTags : ['hackhub']
+    }
   }
 
   getScore = () => {
@@ -82,7 +82,41 @@ class AddApp extends Component {
     }
   };
 
-    addNewApp(newAppObj, appDetailsObj);
+    console.log("AddApp list state")
+    console.log(this.state)
+
+    let formData = new FormData();
+    formData.append("title", this.state.projectName);
+    formData.append("symbol", "./appJSONs/thumbnails/image1.jpg");
+    formData.append("category", this.state.projectName);
+    formData.append("teamname", this.state.teamName);
+    formData.append("teammember1", this.state.teammember1);
+    formData.append("purpose", this.state.projectDesc);
+    //formData.append("attachmentname1", this.state.attachmentname1);
+    //formData.append("attachmenturl1", this.state.fileData1);
+
+    const options = {
+    method: "post",
+    cache: "no-cache",
+    body: formData,
+    //credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      //'Content-Type': 'multipart/form-data'
+      //'Content-Type': 'multipart/form-data'
+      //'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  };
+
+
+    fetch("http://hackhub-001.appspot.com/books/hackhub", options)
+      .then( (response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok.');
+          }
+        });
+
+    //addNewApp(newAppObj, appDetailsObj);
    this.props.history.push("/dashboard");
   }
 
@@ -109,7 +143,7 @@ handleBlur = (e) => {
 
  appendInput() {
         if(this.state.inputs.length < 5) {
-        	var newInput = `input-${this.state.inputs.length}`;
+        	var newInput = `teammember${this.state.inputs.length + 1}`;
         	this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
 	}
   }
@@ -157,6 +191,12 @@ onFileUpload () {
 
 
        this.setState({"fileData" : data});
+}
+
+handleFileUpload = (e) => {
+  if (e.target.name == "attachmenturl1") {
+    this.setState({"fileData1" : e.target.files});
+  }
 }
 
 
@@ -260,7 +300,8 @@ onFileUpload () {
                   </FormGroup>
                     <FormGroup>
                       <Label htmlFor="projectVersion">Version</Label>
-                      <Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1" pattern="(\d+\.)(\d+\.)(\d+\.)(\d)" onChange={this.handleChange}  onBlur={this.handleBlur} required />
+                      {/*}<Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1" pattern="(\d+\.)(\d+\.)(\d+\.)(\d)" onChange={this.handleChange}  onBlur={this.handleBlur} required />*/}
+                      <Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1" pattern="(\d+\.)(\d+\.)(\d+\.)(\d)" onChange={this.handleChange} required />
                     </FormGroup>
 		    <FormGroup >
                       <Label htmlFor="projectDesc">Description</Label>
@@ -286,7 +327,7 @@ onFileUpload () {
                 <FormGroup>
                   <Label htmlFor="teamMembers">Team Members</Label>
 		   <div id="dynamicInput">
-                       {this.state.inputs.map(input => <Input  type="text" id="teamMembers" placeholder="Enter team member" key={input}/>)}
+                       {this.state.inputs.map(input => <Input  type="text" id={input} name={input} placeholder="Enter team member" onChange={this.handleChange} key={input}/>)}
                    </div>
                   <button type="button" id="addTeamMember" onClick={ () => this.appendInput() }>
                     +
@@ -303,11 +344,15 @@ onFileUpload () {
                 <strong>Documents</strong> Attachments
               </CardHeader>
               <CardBody>
-                  <FormGroup className="files">
-                      <Label htmlFor="file-multiple-input">Multiple File input</Label>
-
-                      <Input  type="file" id="file-multiple-input" name="file-multiple-input"  onChange={this.onFileSelect.bind(this)} multiple />
-                       <button type="button" className="btn btn-success pull-right" onClick={this.onFileUpload.bind(this)}>Upload</button>
+                  <FormGroup>
+                  {/*<FormGroup className="files">*/}
+                      {/*}<Label htmlFor="file-multiple-input">Multiple File input</Label>*/}
+                      <Label htmlFor="attachmentname1">Attachment Description</Label>
+                      <Input type="text" id="attachmentname1" name ="attachmentname1" placeholder="Enter attachment description" onChange={this.handleChange} />
+                      <Label htmlFor="attachmentname1">Attachment</Label>
+                      <Input  type="file" id="attachmenturl1" name="attachmenturl1" onChange={this.handleFileUpload} />
+                      {/*}<Input  type="file" id="file-multiple-input" name="file-multiple-input"  onChange={this.onFileSelect.bind(this)} multiple />
+                       <button type="button" className="btn btn-success pull-right" onClick={this.onFileUpload.bind(this)}>Upload</button>*/}
 
                   </FormGroup>
 
