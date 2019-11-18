@@ -92,8 +92,8 @@ class AddApp extends Component {
     formData.append("teamname", this.state.teamName);
     formData.append("teammember1", this.state.teammember1);
     formData.append("purpose", this.state.projectDesc);
-    //formData.append("attachmentname1", this.state.attachmentname1);
-    //formData.append("attachmenturl1", this.state.fileData1);
+    formData.append("attachmentname1", this.state.attachmentname1);
+    formData.append("attachment1", this.state.fileData1);
 
     const options = {
     method: "post",
@@ -109,7 +109,8 @@ class AddApp extends Component {
   };
 
 
-    fetch("http://hackhub-001.appspot.com/books/hackhub", options)
+    //fetch("http://127.0.0.1:8080/books/hackhub", options)
+    fetch("https://hackhub-001.appspot.com/books/hackhub", options)
       .then( (response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok.');
@@ -195,7 +196,7 @@ onFileUpload () {
 
 handleFileUpload = (e) => {
   if (e.target.name == "attachmenturl1") {
-    this.setState({"fileData1" : e.target.files});
+    this.setState({"fileData1" : e.target.files[0]});
   }
 }
 
@@ -350,7 +351,7 @@ handleFileUpload = (e) => {
                       <Label htmlFor="attachmentname1">Attachment Description</Label>
                       <Input type="text" id="attachmentname1" name ="attachmentname1" placeholder="Enter attachment description" onChange={this.handleChange} />
                       <Label htmlFor="attachmentname1">Attachment</Label>
-                      <Input  type="file" id="attachmenturl1" name="attachmenturl1" onChange={this.handleFileUpload} />
+                      <Input type="file" id="attachmenturl1" name="attachmenturl1" onChange={this.handleFileUpload} />
                       {/*}<Input  type="file" id="file-multiple-input" name="file-multiple-input"  onChange={this.onFileSelect.bind(this)} multiple />
                        <button type="button" className="btn btn-success pull-right" onClick={this.onFileUpload.bind(this)}>Upload</button>*/}
 
