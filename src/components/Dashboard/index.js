@@ -209,11 +209,11 @@ class Dashboard extends Component {
           </div>
           {this.state.showApp &&
             <div>
-              <section className="content">
-                <div className="row">
+
+
                   <HackHubDetail appDetailsData={this.state.appDetailsData} onCloseApp={this.handleAppClose} />
-                </div>
-              </section>
+
+
             </div>
           }
         </div>

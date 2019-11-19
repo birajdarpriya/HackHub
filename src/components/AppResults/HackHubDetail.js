@@ -46,24 +46,23 @@ class HackHubDetail extends PureComponent {
           		<div class="box box-widget widget-user-2">
             			<div class="widget-user-header bg-yellow">
 				<div class="pull-right box-tools">
-				/*<button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
-				</button>*/
+				
 				<button type="button" class="btn btn-success btn-sm" onClick={this.onCloseApp}><i class="fa fa-times"></i>
 				</button>
 			      </div>
 
       				<div class="widget-user-image">
-        				<img class="img-circle" src="../dist/img/user7-128x128.jpg" alt="User Avatar" />
+        				<img class="img-circle" src="../theme/dist/img/84344508-illustration-art-of-a-gear-tools-icon-with-isolated-background.jpg" alt="User Avatar" />
       				</div>
-				<h3 class="widget-user-username">{appDetails.title}</h3>
+				<label class="widget-user-username">{appDetails.title}</label>
       				<h5 class="widget-user-desc">{appDetails.teamname}</h5>
     				</div>
                         </div>
 
                         <section className="box content">
-  				<h3 class="">Description</h3>
+  				<label class="">Description</label>
               				<p class="widget-user-desc">{appDetails.purpose}</p>
-          <h3 class="">Team Members</h3>
+          <label class="">Team Members</label>
                       <p class="widget-user-desc">{appDetails.teammember1}</p>
                       {teammember2 !== "" ? (
                         <p class="widget-user-desc">{appDetails.teammember2}</p>
@@ -105,29 +104,30 @@ class HackHubDetail extends PureComponent {
                       ) : (
                         <div></div>
                       )}
-            <h3 class="">Published Date</h3>
+            <label class="">Published Date</label>
                         <p class="widget-user-desc">{appDetails.publisheddate}</p>
-            <h3 class="">Business Function</h3>
+            <label class="">Business Function</label>
                         <p class="widget-user-desc">{appDetails.businessfunction}</p>
-            <h3 class="">Version</h3>
+            <label class="">Version</label>
                         <p class="widget-user-desc">{appDetails.version}</p>
-            <h3 class="">Service Line</h3>
+            <label class="">Service Line</label>
                         <p class="widget-user-desc">{appDetails.serviceline}</p>
-				<h3 class="">Github Link</h3>
+				<label class="">Github Link</label>
               				<a href={appDetails.githubUrl} target="_blank">{appDetails.githubUrl}</a>
-				<h3 class="">Confluence Link</h3>
+				<label class="">Confluence Link</label>
               				<a href={appDetails.confluenceUrl} target="_blank">{appDetails.confluenceUrl}</a>
 
 
 
-                      <h3 class="">Attachments</h3>
+                      <label class="">Attachments</label>
+                      <div>
                       {attachmentname1 !== "" ? (
                         <a href={appDetails.attachmenturl1} target="_blank">{appDetails.attachmentname1}</a>
                       ) : (
                         <div></div>
                       )}
 
-
+                       </div>
 
                         </section>
             		<div class="box-footer no-padding">
