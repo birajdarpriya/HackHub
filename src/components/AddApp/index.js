@@ -91,6 +91,10 @@ class AddApp extends Component {
     formData.append("category", this.state.projectName);
     formData.append("teamname", this.state.teamName);
     formData.append("teammember1", this.state.teammember1);
+    formData.append("teammember2", this.state.teammember2);
+    formData.append("teammember3", this.state.teammember3);
+    formData.append("teammember4", this.state.teammember4);
+    formData.append("teammember5", this.state.teammember5);
     formData.append("purpose", this.state.projectDesc);
     formData.append("attachmentname1", this.state.attachmentname1);
     formData.append("attachment1", this.state.fileData1);
