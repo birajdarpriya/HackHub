@@ -11,7 +11,7 @@ class HackHubDetail extends PureComponent {
   searchKeyword = event => {
   }
   render() {
-    const teammember2 = this.props.appDetailsData.teammember2;
+   /* const teammember2 = this.props.appDetailsData.teammember2;
     const teammember3 = this.props.appDetailsData.teammember3;
     const teammember4 = this.props.appDetailsData.teammember4;
     const teammember5 = this.props.appDetailsData.teammember5;
@@ -27,7 +27,7 @@ class HackHubDetail extends PureComponent {
     const attachmentname6 = this.props.appDetailsData.attachmentname6;
     const attachmentname7 = this.props.appDetailsData.attachmentname7;
     const attachmentname8 = this.props.appDetailsData.attachmentname8;
-    const attachmentname9 = this.props.appDetailsData.attachmentname9;
+    const attachmentname9 = this.props.appDetailsData.attachmentname9;*/
 
     return (
       <div>
@@ -64,43 +64,23 @@ class HackHubDetail extends PureComponent {
               				<p class="widget-user-desc">{appDetails.purpose}</p>
           <label class="">Team Members</label>
                       <p class="widget-user-desc">{appDetails.teammember1}</p>
-                      {teammember2 !== "" ? (
+                      {appDetails.teammember2 !== "" ? (
                         <p class="widget-user-desc">{appDetails.teammember2}</p>
                       ) : (
                         <div></div>
                       )}
-                      {teammember3 !== "" ? (
+                      {appDetails.teammember3 !== "" ? (
                         <p class="widget-user-desc">{appDetails.teammember3}</p>
                       ) : (
                         <div></div>
                       )}
-                      {teammember4 !== "" ? (
+                      {appDetails.teammember4 !== "" ? (
                         <p class="widget-user-desc">{appDetails.teammember4}</p>
                       ) : (
                         <div></div>
                       )}
-                      {teammember5 !== "" ? (
+                      {appDetails.teammember5 !== "" ? (
                         <p class="widget-user-desc">{appDetails.teammember5}</p>
-                      ) : (
-                        <div></div>
-                      )}
-                      {teammember6 !== "" ? (
-                        <p class="widget-user-desc">{appDetails.teammember6}</p>
-                      ) : (
-                        <div></div>
-                      )}
-                      {teammember7 !== "" ? (
-                        <p class="widget-user-desc">{appDetails.teammember7}</p>
-                      ) : (
-                        <div></div>
-                      )}
-                      {teammember8 !== "" ? (
-                        <p class="widget-user-desc">{appDetails.teammember8}</p>
-                      ) : (
-                        <div></div>
-                      )}
-                      {teammember9 !== "" ? (
-                        <p class="widget-user-desc">{appDetails.teammember9}</p>
                       ) : (
                         <div></div>
                       )}
@@ -121,7 +101,7 @@ class HackHubDetail extends PureComponent {
 
                       <label class="">Attachments</label>
                       <div>
-                      {attachmentname1 !== "" ? (
+                      {appDetails.attachmentname1 !== "" ? (
                         <a href={appDetails.attachmenturl1} target="_blank">{appDetails.attachmentname1}</a>
                       ) : (
                         <div></div>
