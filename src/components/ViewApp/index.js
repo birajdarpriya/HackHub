@@ -39,11 +39,15 @@ import '../../theme/dist/css/skins/_all-skins.min.css';
 import '../../theme/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css';
 // import '../../theme/bower_components/jquery/dist/jquery.min.js';
 import { addNewApp} from "../Utility/filteringApps";
+import { Redirect } from 'react-router-dom';
 import Const from "../../Const";
 
-class AddApp extends Component {
+class ViewApp extends Component {
   constructor(props) {
     super(props);
+
+    console.log(this.props.location.state)
+
     this.state = { geritScore: 0 ,
 	collapse: true,
       fadeIn: true,
@@ -51,8 +55,47 @@ class AddApp extends Component {
       max_chars : 500,
       selectedFiles : [],
       inputs: ['teammember1'],
-      hashTags : ['hackhub']
+      hashTags : ['hackhub'],
+
+      // assign value
+      id: this.props.location.state.data[0].id,
+      projectName: this.props.location.state.data[0].title,
+      symbol: "./appJSONs/thumbnails/image1.jpg",
+      category: this.props.location.state.data[0].title,
+      teamName: this.props.location.state.data[0].teamname,
+      teammember1: this.props.location.state.data[0].teammember1,
+      teammember2: this.props.location.state.data[0].teammember2,
+      teammember3: this.props.location.state.data[0].teammember3,
+      teammember4: this.props.location.state.data[0].teammember4,
+      teammember5: this.props.location.state.data[0].teammember5,
+      projectDesc: this.props.location.state.data[0].purpose,
+      attachmentname1: this.props.location.state.data[0].attachmentname1
+      //attachment1: this.props.location.state.data[0].fileData1
     }
+
+    if (this.state.teammember2) {
+      this.state = {
+        inputs: ['teammember1', 'teammember2']
+      }
+    }
+
+    if (this.state.teammember3) {
+      var newInput = `teammember${this.state.inputs.length + 1}`;
+      this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
+    }
+
+    if (this.state.teammember4) {
+      var newInput = `teammember${this.state.inputs.length + 1}`;
+      this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
+    }
+
+    if (this.state.teammember5) {
+      var newInput = `teammember${this.state.inputs.length + 1}`;
+      this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
+    }
+
+    console.log("viewApp print state")
+    console.log(this.state)
   }
 
   getScore = () => {
@@ -113,18 +156,100 @@ class AddApp extends Component {
     }
   };
 
+    fetch(Const.BACKENDURL + "books/hackhub", options)
+    //fetch("https://hackhub-001.appspot.com/books/hackhub", options)
+      .then( (response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok.');
+          }
+        });
 
+    //addNewApp(newAppObj, appDetailsObj);
+   //this.props.history.push("/dashboard");
+   this.props.push("/dashboard");
+  }
+
+  updateApplication = (e) => {
+
+    let formData = new FormData();
+    formData.append("id", this.state.id);
+    formData.append("title", this.state.projectName);
+    formData.append("symbol", "./appJSONs/thumbnails/image1.jpg");
+    formData.append("category", this.state.projectName);
+    formData.append("teamname", this.state.teamName);
+    formData.append("teammember1", this.state.teammember1);
+    formData.append("teammember2", this.state.teammember2);
+    formData.append("teammember3", this.state.teammember3);
+    formData.append("teammember4", this.state.teammember4);
+    formData.append("teammember5", this.state.teammember5);
+    formData.append("purpose", this.state.projectDesc);
+    formData.append("attachmentname1", this.state.attachmentname1);
+    formData.append("attachment1", this.state.fileData1);
+
+    const options = {
+    method: "put",
+    cache: "no-cache",
+    body: formData,
+    //credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      //'Content-Type': 'multipart/form-data'
+      //'Content-Type': 'multipart/form-data'
+      //'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  };
+
+
+    //fetch("http://127.0.0.1:8080/books/hackhub", options)
     fetch(Const.BACKENDURL + "books/hackhub", options)
       .then( (response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok.');
           }
 
-          this.props.history.push("/dashboard");
+          this.setState({
+             redirect: true
+           })
         });
 
     //addNewApp(newAppObj, appDetailsObj);
+   //this.props.history.push("/dashboard");
+   //this.props.push("/dashboard");
+  }
 
+  deleteApplication = (e) => {
+
+    let formData = new FormData();
+    formData.append("id", this.props.location.state.data[0].id);
+
+    const options = {
+    method: "delete",
+    cache: "no-cache",
+    body: formData,
+    //credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+      //'Content-Type': 'multipart/form-data'
+      //'Content-Type': 'multipart/form-data'
+      //'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  };
+
+
+    //fetch("http://127.0.0.1:8080/books/hackhub", options)
+    fetch(Const.BACKENDURL + "books/hackhub", options)
+      .then( (response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok.');
+          }
+
+          this.setState({
+             redirect: true
+           })
+        });
+
+    //addNewApp(newAppObj, appDetailsObj);
+   //this.props.history.push("/dashboard");
   }
 
 handleBlur = (e) => {
@@ -153,7 +278,6 @@ handleBlur = (e) => {
         	var newInput = `teammember${this.state.inputs.length + 1}`;
         	this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
 	}
-  console.log(this.state)
   }
 
 createNewBadge(name) {
@@ -207,10 +331,29 @@ handleFileUpload = (e) => {
   }
 }
 
+renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/dashboard' />
+    }
+  }
 
   render() {
+    const id = this.state.id;
+    const projectName = this.state.projectName;
+    const symbol = this.state.symbol;
+    const category = this.state.category;
+    const teamName = this.state.teamName;
+    const teammember1 = this.state.teammember1;
+    const teammember2 = this.state.teammember2;
+    const teammember3 = this.state.teammember3;
+    const teammember4 = this.state.teammember4;
+    const teammember5 = this.state.teammember5;
+    const projectDesc = this.state.projectDesc;
+    const attachmentname1 = this.state.attachmentname1;
+
     return (
       <div className="wrapper">
+      {this.renderRedirect()}
         <header className="main-header">
           <a href="/dashboard" className="logo">
             <span className="logo-mini"><b>A</b>LT</span>
@@ -223,7 +366,7 @@ handleFileUpload = (e) => {
             <div className="navbar-custom-menu">
               <ul className="nav navbar-nav">
                 <li className="dropdown messages-menu">
-                  <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+                  <a href="/add-app" className="dropdown-toggle" data-toggle="dropdown">
                     <i className="fa fa-plus"></i>
                   </a>
                 </li>
@@ -300,7 +443,7 @@ handleFileUpload = (e) => {
               <CardBody>
                     <FormGroup>
                       <Label htmlFor="projectName">Name</Label>
-                      <Input type="text" id="projectName"name="projectName" placeholder="Enter project name" onChange={this.handleChange} required />
+                      <Input type="text" id="projectName"name="projectName" placeholder="Enter project name" onChange={this.handleChange} required value={projectName}/>
                     </FormGroup>
 		  <FormGroup>
                       <Label>Project Id </Label>
@@ -314,7 +457,7 @@ handleFileUpload = (e) => {
 		    <FormGroup >
                       <Label htmlFor="projectDesc">Description</Label>
                       <Input type="textarea" name="projectDesc" id="projectDesc" rows="9" maxLength = "500"
-                             placeholder="Keep it short and simple..." onChange={this.handleDescChange.bind(this)} />
+                             placeholder="Keep it short and simple..." onChange={this.handleDescChange.bind(this)} value={projectDesc} />
 		      <p>Characters Left: {this.state.chars_left}</p>
 
                   </FormGroup>
@@ -330,7 +473,7 @@ handleFileUpload = (e) => {
               <CardBody>
                 <FormGroup>
                   <Label htmlFor="teamName">Team Name</Label>
-                  <Input type="text" id="teamName" name ="teamName" placeholder="Enter your team name" onChange={this.handleChange} required />
+                  <Input type="text" id="teamName" name ="teamName" placeholder="Enter your team name" onChange={this.handleChange} value={teamName} required/>
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="teamMembers">Team Members</Label>
@@ -410,9 +553,11 @@ handleFileUpload = (e) => {
           </Col>
         </Row>
         <div className="box-footer">
-            <button type="button" className="btn btn-primary" onClick={this.getScore}>Check Gerit Score</button>{this.state.getScore}
+            {/*<button type="button" className="btn btn-primary" onClick={this.getScore}>Check Gerit Score</button>{this.state.getScore}*/}
+            <button type="button" className="btn btn-primary" onClick={this.deleteApplication}>Delete</button>
             {this.state.getScore > 0 && <span>+{this.state.getScore}</span>}
-            <button type="button" className="btn btn-primary" style={{ float: "right" }} onClick={this.addApplication}>Submit</button>
+
+            {<button type="button" className="btn btn-primary" style={{ float: "right" }} onClick={this.updateApplication}>Update</button>}
         </div>
     </form>
 </section>
@@ -430,4 +575,4 @@ handleFileUpload = (e) => {
   }
 }
 
-export default AddApp;
+export default ViewApp;

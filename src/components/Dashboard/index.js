@@ -19,11 +19,12 @@ import HackHubList from "../AppResults/HackHubList";
 import { filterApps, filterAppsData, fetchApplcationDetails, filterhackhublist } from "../Utility/filteringApps";
 import AppDetails from "../AppResults/AppDetails";
 import HackHubDetail from "../AppResults/HackHubDetail";
+import Const from "../../Const";
 
 class Dashboard extends Component {
 
   componentDidMount () {
-    fetch('http://hackhub-001.appspot.com/books/hackhub')
+    fetch(Const.BACKENDURL + "books/hackhub")
       .then(res => res.json())
       .then(this.onLoad);
   }
@@ -80,14 +81,20 @@ class Dashboard extends Component {
   };
 
   handleAppSelected = id => {
-    fetch('http://hackhub-001.appspot.com/books/hackhub/' + id)
+    /*fetch('http://hackhub-001.appspot.com/books/hackhub/' + id)
       .then(res => res.json())
       .then(data => {
         this.setState({
           appDetailsData: data,
           showApp: true
         });
-      });
+      });*/
+
+      fetch(Const.BACKENDURL + "books/hackhub/" + id)
+        .then(res => res.json())
+        .then(data => {
+          this.props.history.push("/view-app", {data : data});
+        });
   }
 
   handleAppClose = event => {
