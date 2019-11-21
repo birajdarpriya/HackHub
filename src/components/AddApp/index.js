@@ -59,6 +59,10 @@ class AddApp extends Component {
     this.setState({ geritScore: 3 });
   }
 
+  onCloseApp = event => {
+    this.props.history.push("/dashboard");
+  }
+
   addApplication = (e) => {
 
     var newAppObj = {};
@@ -287,6 +291,11 @@ handleFileUpload = (e) => {
               <li className="active">General Elements</li>
             </ol> */}
           </section>
+          <div class="pull-right box-tools">
+
+          <button type="button" class="btn btn-success btn-sm" onClick={this.onCloseApp}><i class="fa fa-times"></i>
+          </button>
+              </div>
 
         <section className="content">
     <form role="form" name="addAppFrm">

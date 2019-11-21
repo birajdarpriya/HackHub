@@ -39,14 +39,15 @@ import '../../theme/dist/css/skins/_all-skins.min.css';
 import '../../theme/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css';
 // import '../../theme/bower_components/jquery/dist/jquery.min.js';
 import { addNewApp} from "../Utility/filteringApps";
-import { Redirect } from 'react-router-dom';
+//import { Redirect } from 'react-router-dom';
 import Const from "../../Const";
+import { decode } from 'he';
+import { withRouter, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 class ViewApp extends Component {
   constructor(props) {
     super(props);
-
-    console.log(this.props.location.state)
 
     this.state = { geritScore: 0 ,
 	collapse: true,
@@ -68,8 +69,10 @@ class ViewApp extends Component {
       teammember3: this.props.location.state.data[0].teammember3,
       teammember4: this.props.location.state.data[0].teammember4,
       teammember5: this.props.location.state.data[0].teammember5,
-      projectDesc: this.props.location.state.data[0].purpose,
-      attachmentname1: this.props.location.state.data[0].attachmentname1
+      projectDesc: decode(this.props.location.state.data[0].purpose),
+      attachmentname1: this.props.location.state.data[0].attachmentname1,
+      attachmenturl1: this.props.location.state.data[0].attachmenturl1
+
       //attachment1: this.props.location.state.data[0].fileData1
     }
 
@@ -94,13 +97,13 @@ class ViewApp extends Component {
       this.setState(prevState => ({ inputs: prevState.inputs.concat([newInput]) }));
     }
 
-    console.log("viewApp print state")
-    console.log(this.state)
   }
 
   getScore = () => {
     this.setState({ geritScore: 3 });
   }
+
+
 
   addApplication = (e) => {
 
@@ -126,8 +129,6 @@ class ViewApp extends Component {
     }
   };
 
-    console.log("AddApp list state")
-    console.log(this.state)
 
     let formData = new FormData();
     formData.append("title", this.state.projectName);
@@ -217,6 +218,7 @@ class ViewApp extends Component {
    //this.props.push("/dashboard");
   }
 
+
   deleteApplication = (e) => {
 
     let formData = new FormData();
@@ -270,7 +272,7 @@ handleBlur = (e) => {
     var obj = {};
     obj[name] = value;
     this.setState(obj);
-    console.log(this.state);
+
   }
 
  appendInput() {
@@ -337,19 +339,32 @@ renderRedirect = () => {
     }
   }
 
+  onCloseApp = event => {
+    this.props.history.push("/dashboard");
+  }
+
   render() {
-    const id = this.state.id;
-    const projectName = this.state.projectName;
-    const symbol = this.state.symbol;
-    const category = this.state.category;
-    const teamName = this.state.teamName;
-    const teammember1 = this.state.teammember1;
-    const teammember2 = this.state.teammember2;
-    const teammember3 = this.state.teammember3;
-    const teammember4 = this.state.teammember4;
-    const teammember5 = this.state.teammember5;
-    const projectDesc = this.state.projectDesc;
-    const attachmentname1 = this.state.attachmentname1;
+    const id = this.props.location.state.data[0].id;
+    const projectName = this.props.location.state.data[0].title;
+    const symbol = "./appJSONs/thumbnails/image1.jpg";
+    const category = this.props.location.state.data[0].title;
+    const teamName = this.props.location.state.data[0].teamname;
+    const teammember1 = this.props.location.state.data[0].teammember1;
+    let teammember2 = this.props.location.state.data[0].teammember2;
+    let teammember3 = this.props.location.state.data[0].teammember3;
+    let teammember4 = this.props.location.state.data[0].teammember4;
+    let teammember5 = this.props.location.state.data[0].teammember5;
+    const projectDesc = this.props.location.state.data[0].purpose;
+    const attachmentname1 = this.props.location.state.data[0].attachmentname1;
+    const attachmenturl1 = this.props.location.state.data[0].attachmenturl1;
+
+    if (typeof teammember2 !== 'undefined') teammember2 = null;
+    if (typeof teammember3 !== 'undefined') teammember3 = null;
+    if (typeof teammember4 !== 'undefined') teammember4 = null;
+    if (typeof teammember5 !== 'undefined') teammember5 = null;
+
+
+
 
     return (
       <div className="wrapper">
@@ -421,7 +436,7 @@ renderRedirect = () => {
         <div className="content-wrapper">
           <section className="content-header">
             <h1>
-              Upload your application
+              View your application
             {/* <small>Preview</small> */}
             </h1>
             {/* <ol className="breadcrumb">
@@ -430,7 +445,11 @@ renderRedirect = () => {
               <li className="active">General Elements</li>
             </ol> */}
           </section>
+          <div class="pull-right box-tools">
 
+          <button type="button" class="btn btn-success btn-sm" onClick={this.onCloseApp}><i class="fa fa-times"></i>
+          </button>
+              </div>
         <section className="content">
     <form role="form" name="addAppFrm">
         <Row>
@@ -443,22 +462,13 @@ renderRedirect = () => {
               <CardBody>
                     <FormGroup>
                       <Label htmlFor="projectName">Name</Label>
-                      <Input type="text" id="projectName"name="projectName" placeholder="Enter project name" onChange={this.handleChange} required value={projectName}/>
+                      <p>{projectName}</p>
                     </FormGroup>
-		  <FormGroup>
-                      <Label>Project Id </Label>
-                      <p className="form-control-static">system-generated-id</p>
-                  </FormGroup>
-                    <FormGroup>
-                      <Label htmlFor="projectVersion">Version</Label>
-                      {/*}<Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1" pattern="(\d+\.)(\d+\.)(\d+\.)(\d)" onChange={this.handleChange}  onBlur={this.handleBlur} required />*/}
-                      <Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1" pattern="(\d+\.)(\d+\.)(\d+\.)(\d)" onChange={this.handleChange} required />
-                    </FormGroup>
+
+
 		    <FormGroup >
                       <Label htmlFor="projectDesc">Description</Label>
-                      <Input type="textarea" name="projectDesc" id="projectDesc" rows="9" maxLength = "500"
-                             placeholder="Keep it short and simple..." onChange={this.handleDescChange.bind(this)} value={projectDesc} />
-		      <p>Characters Left: {this.state.chars_left}</p>
+                      <p>{projectDesc}</p>
 
                   </FormGroup>
               </CardBody>
@@ -473,16 +483,15 @@ renderRedirect = () => {
               <CardBody>
                 <FormGroup>
                   <Label htmlFor="teamName">Team Name</Label>
-                  <Input type="text" id="teamName" name ="teamName" placeholder="Enter your team name" onChange={this.handleChange} value={teamName} required/>
+                  <p>{teamName}</p>
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="teamMembers">Team Members</Label>
-		   <div id="dynamicInput">
-                       {this.state.inputs.map(input => <Input  type="text" id={input} name={input} placeholder="Enter team member" onChange={this.handleChange} key={input}/>)}
-                   </div>
-                  <button type="button" id="addTeamMember" onClick={ () => this.appendInput() }>
-                    +
-               </button>
+		                <p>{teammember1}</p>
+                    <p>{teammember2}</p>
+                    <p>{teammember3}</p>
+                    <p>{teammember4}</p>
+                    <p>{teammember5}</p>
                 </FormGroup>
               </CardBody>
             </Card>
@@ -498,10 +507,13 @@ renderRedirect = () => {
                   <FormGroup>
                   {/*<FormGroup className="files">*/}
                       {/*}<Label htmlFor="file-multiple-input">Multiple File input</Label>*/}
-                      <Label htmlFor="attachmentname1">Attachment Description</Label>
-                      <Input type="text" id="attachmentname1" name ="attachmentname1" placeholder="Enter attachment description" onChange={this.handleChange} />
-                      <Label htmlFor="attachmentname1">Attachment</Label>
-                      <Input type="file" id="attachmenturl1" name="attachmenturl1" onChange={this.handleFileUpload} />
+                      <p>
+                      {attachmenturl1 !== "" ? (
+                        <a href={attachmenturl1} target="_blank">{attachmentname1}</a>
+                      ) : (
+                        <div></div>
+                      )}
+                      </p>
                       {/*}<Input  type="file" id="file-multiple-input" name="file-multiple-input"  onChange={this.onFileSelect.bind(this)} multiple />
                        <button type="button" className="btn btn-success pull-right" onClick={this.onFileUpload.bind(this)}>Upload</button>*/}
 
@@ -522,7 +534,7 @@ renderRedirect = () => {
               <CardBody>
                   <FormGroup>
                    <div id="hashTagsDiv">
-                       {this.state.hashTags.map(hashTag => <Badge  type="text" id="hashTags" key={hashTag}>{hashTag} </Badge>)}
+
                    </div>
 
 
@@ -554,10 +566,10 @@ renderRedirect = () => {
         </Row>
         <div className="box-footer">
             {/*<button type="button" className="btn btn-primary" onClick={this.getScore}>Check Gerit Score</button>{this.state.getScore}*/}
-            <button type="button" className="btn btn-primary" onClick={this.deleteApplication}>Delete</button>
+
             {this.state.getScore > 0 && <span>+{this.state.getScore}</span>}
 
-            {<button type="button" className="btn btn-primary" style={{ float: "right" }} onClick={this.updateApplication}>Update</button>}
+            <button type="button" className="btn btn-primary" style={{ float: "right" }} onClick={this.deleteApplication}>Delete</button>
         </div>
     </form>
 </section>
@@ -575,4 +587,10 @@ renderRedirect = () => {
   }
 }
 
-export default ViewApp;
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth
+    };
+};
+
+export default withRouter(connect(mapStateToProps)(ViewApp));

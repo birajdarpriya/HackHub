@@ -20,6 +20,10 @@ import { filterApps, filterAppsData, fetchApplcationDetails, filterhackhublist }
 import AppDetails from "../AppResults/AppDetails";
 import HackHubDetail from "../AppResults/HackHubDetail";
 import Const from "../../Const";
+import { connect } from "react-redux";
+import { withRouter, NavLink } from "react-router-dom";
+import Login from "../Login/index";
+import { Redirect } from 'react-router-dom';
 
 class Dashboard extends Component {
 
@@ -108,9 +112,13 @@ class Dashboard extends Component {
   }
 
   render () {
-    return this.state.filterApps ?
-      this.renderData() :
-      this.renderLoading()
+    if (this.props.auth.isAuthenticated) {
+      return this.state.filterApps ?
+        this.renderData() :
+        this.renderLoading()
+    }
+    return <Redirect to='/Login' />
+
   }
 
   renderLoading () {
@@ -238,4 +246,11 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = (state) => {
+    return {
+        auth: state.auth
+    };
+};
+
+//export default Dashboard;
+export default withRouter(connect(mapStateToProps)(Dashboard));
