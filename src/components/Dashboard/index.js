@@ -28,6 +28,8 @@ import { Redirect } from 'react-router-dom';
 class Dashboard extends Component {
 
   componentDidMount () {
+    this.setState({ showOverlay : true });
+
     fetch(Const.BACKENDURL + "books/hackhub")
       .then(res => res.json())
       .then(this.onLoad);
@@ -39,9 +41,9 @@ class Dashboard extends Component {
       filterApps: filterhackhublist(data, this.state.searchString, 20),
       appDetailsData: fetchApplcationDetails("Fund Transfer"),
       searchString: "",
-      showApp: false
+      showApp: false,
+      showOverlay : false
     });
-
   }
 
 
@@ -65,9 +67,9 @@ class Dashboard extends Component {
       filterApps: "",
       appDetailsData: "",
       searchString: "",
-      showApp: false
+      showApp: false,
+      showOverlay : true
     };
-
   }
 
   handleSearchChange = event => {
@@ -94,9 +96,11 @@ class Dashboard extends Component {
         });
       });*/
 
+     this.setState({ showOverlay : true });
       fetch(Const.BACKENDURL + "books/hackhub/" + id)
         .then(res => res.json())
         .then(data => {
+          this.setState({ showOverlay : true });
           this.props.history.push("/view-app", {data : data});
         });
   }
@@ -113,22 +117,26 @@ class Dashboard extends Component {
 
   render () {
     if (this.props.auth.isAuthenticated) {
-      return this.state.filterApps ?
-        this.renderData() :
-        this.renderLoading()
+      return this.renderData()
     }
     return <Redirect to='/Login' />
 
   }
 
   renderLoading () {
-    return <div>Loading...</div>
+    return <div id="loadingOverlay">
+      <i id ="spinner" className="fa fa-spinner fa-pulse" />
+    </div>
   }
 
   renderData() {
     return (
       <div className="wrapper">
-
+         { this.state.showOverlay &&
+         	<div id="loadingOverlay">
+      			<i id ="spinner" className="fa fa-spinner fa-pulse" />
+   	 	</div>
+        }
         {/*Header Start*/}
         <header className="main-header">
           <a href="/dashboard" className="logo">
@@ -218,7 +226,9 @@ class Dashboard extends Component {
 
             <section className="content">
               <div className="row">
+                { this.state.filterApps &&
                 <HackHubList onSelectApp={this.handleAppSelected} searchResults={this.state.filterApps} />
+                }
               </div>
             </section>
           </div>
