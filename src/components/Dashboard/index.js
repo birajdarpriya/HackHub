@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
 
-import '../../theme/bower_components/bootstrap/dist/css/bootstrap.min.css';
-import '../../theme/bower_components/font-awesome/css/font-awesome.min.css';
-import '../../theme/bower_components/Ionicons/css/ionicons.min.css';
-import '../../theme/dist/css/AdminLTE.css';
-import '../../theme/plugins/iCheck/square/blue.css';
-
-import '../../theme/bower_components/morris.js/morris.css';
-import '../../theme/bower_components/jvectormap/jquery-jvectormap.css';
-import '../../theme/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css';
-import '../../theme/bower_components/bootstrap-daterangepicker/daterangepicker.css';
-
 import '../../theme/dist/css/skins/_all-skins.min.css';
 import '../../theme/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css';
 import SearchApp from "../AppResults/SearchApp";

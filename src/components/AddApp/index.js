@@ -22,7 +22,7 @@ import {
   InputGroupButtonDropdown,
   InputGroupText,
   Label,
-  Row,
+  Row
 } from 'reactstrap';
 
 import { addNewApp} from "../Utility/filteringApps";
@@ -278,9 +278,11 @@ handleFileUpload = (e) => {
               <li className="active">General Elements</li>
             </ol> */}
           </section>
-          <div class="pull-right box-tools">
 
-          <button type="button" class="btn btn-success btn-sm" onClick={this.onCloseApp}><i class="fa fa-times"></i>
+
+          <div className="pull-right box-tools">
+
+          <button type="button" className = "btn btn-success btn-sm" onClick={this.onCloseApp}><i className="fa fa-times"></i>
           </button>
               </div>
 
@@ -296,7 +298,8 @@ handleFileUpload = (e) => {
               <CardBody>
                     <FormGroup>
                       <Label htmlFor="projectName">Name</Label>
-                      <Input type="text" id="projectName"name="projectName" placeholder="Enter project name" onChange={this.handleChange} required />
+                      <Input type="text" id="projectName"name="projectName" pattern="[A-Za-z]{3}" placeholder="Enter project name" onChange={this.handleChange} required />
+                      <FormFeedback>You will not be able to see this</FormFeedback>
                     </FormGroup>
 		  <FormGroup>
                       <Label>Project Id </Label>
@@ -402,6 +405,8 @@ handleFileUpload = (e) => {
 
               </CardFooter>
             </Card>
+
+
 
           </Col>
         </Row>

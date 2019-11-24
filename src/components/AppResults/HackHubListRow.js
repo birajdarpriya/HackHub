@@ -11,8 +11,7 @@ constructor() {
     this.icons = ["ion-bag", "ion-stats-bars", "ion-person-add", "ion-pie-graph"];
   this.iconIndex = Math.floor(Math.random() * (4));
 
-    this.state = { // thanks to @Piotr Berebecki,
-                  // i know to define states variable
+    this.state = {
       test2:'this is state test'
     }
   }

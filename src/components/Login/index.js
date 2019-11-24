@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import '../../theme/bower_components/bootstrap/dist/css/bootstrap.min.css';
+//import '../../theme/bower_components/bootstrap/dist/css/bootstrap.min.css';
 import '../../theme/bower_components/font-awesome/css/font-awesome.min.css';
 import '../../theme/bower_components/Ionicons/css/ionicons.min.css';
 import '../../theme/dist/css/AdminLTE.css';

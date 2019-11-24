@@ -3,18 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.3.1",
+    "jsonwebtoken": "^8.3.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-google-login": "^3.2.1",
+    "react-redux": "^5.0.7",
+    "react-responsive-tabs": "^3.0.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "reactstrap": "^8.0.0",
-    "jsonwebtoken": "^8.3.0",
-    "react-google-login": "^3.2.1",
-    "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "react-bootstrap": "^0.32.4"
   },
   "scripts": {
     "start": "react-scripts start",

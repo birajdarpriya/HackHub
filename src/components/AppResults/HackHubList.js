@@ -18,7 +18,7 @@ class HackHubList extends PureComponent {
 
   render() {
     return (
-      <div className="component-emoji-results">
+      <div className="row">
         {this.props.searchResults.map(result => (
           <HackHubListRow
             key={result.id}
