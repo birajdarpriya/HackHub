@@ -32,7 +32,7 @@ constructor() {
 
           <div className={"small-box " + this.colors[this.colorIndex]}>
             <div className="inner" >
-              <h2 style={{oveflow: "hidden"}} >{this.props.title}</h2>
+              <h5 style={{oveflow: "hidden"}} >{this.props.title}</h5>
 
               <p>{this.props.teamname}</p>
             </div>

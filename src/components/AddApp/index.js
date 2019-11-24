@@ -22,15 +22,69 @@ import {
   InputGroupButtonDropdown,
   InputGroupText,
   Label,
-  Row
+  Row,
+ Dropdown,
+Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 
+import avatar1 from '../../assets/utils/images/avatars/avatar1.png';
+import avatar2 from '../../assets/utils/images/avatars/avatar2.png';
+import avatar3 from '../../assets/utils/images/avatars/avatar3.png';
+import avatar4 from '../../assets/utils/images/avatars/avatar4.png';
+import avatar5 from '../../assets/utils/images/avatars/avatar5.png';
+import addTeamIcon from '../../theme/bower_components/Ionicons/png/512/ios7-plus-outline.png';
 import { addNewApp} from "../Utility/filteringApps";
 import Const from "../../Const";
 
 class AddApp extends Component {
   constructor(props) {
     super(props);
+
+   this.defaultAvatarList =[avatar1, avatar2, avatar3, avatar4, avatar5];
+    //Constants 
+    this.hackathonList = [
+      { value: "hackademy2019", label: "Hackademy 2019" },
+      { value: "codegrind1", label: "Code Grind 1.0" },
+      { value: "codegrind2", label: "Code Grind 2.0" },
+      { value: "punetoparis", label: "Pune To Paris" },
+      { value: "anybodycancode", label: "Any Body Can Code" }
+    ];
+
+   this.themeList = {
+     "Select a Hackathon" : [],
+     "Hackademy 2019" :   [
+      { value: "hackademy2019ai", label: "Artificial Intelligence" },
+      { value: "hackademy2019ml", label: "Machine Learning" },
+      { value: "hackademy2019dataengg", label: "Data Engineering" }
+    ],
+    
+"Code Grind 1.0" :   [
+      { value: "codegrind1ai", label: "Code Grind 1.0 - AI" },
+      { value: "codegrind1ml", label: "Code Grind 1.0 - ML" },
+      { value: "codegrind1dataengg", label: "Code Grind 1.0 - Data Engg" }
+    ],
+
+"Code Grind 2.0" :   [
+      { value: "codegrind2ai", label: "Code Grind 2.0 - AI" },
+      { value: "codegrind2ml", label: "Code Grind 2.0 - ML" },
+      { value: "codegrind2dataengg", label: "Code Grind 2.0 - Data Engg" }
+    ],
+
+"Pune To Paris" :   [
+      { value: "punetoparisai", label: "PTP - Artificial Intelligence" },
+      { value: "punetoparisml", label: "PTP -Machine Learning" },
+      { value: "punetoparisdataengg", label: "PTP -Data Engineering" }
+    ],
+"Any Body Can Code" :   [
+      { value: "anybodycancodeai", label: " ABCC - Artificial Intelligence" },
+      { value: "anybodycancodeml", label: "ABCC - Machine Learning" },
+      { value: "anybodycancodedataengg", label: "ABCC -Data Engineering" }
+    ],
+    };
+        this.onMouseEnter = this.onMouseEnter.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.toggleAddTeamMember = this.toggleAddTeamMember.bind(this);
+        this.addTeamMember = this.addTeamMember.bind(this);
     this.state = { geritScore: 0 ,
 	collapse: true,
       fadeIn: true,
@@ -38,9 +92,19 @@ class AddApp extends Component {
       max_chars : 500,
       selectedFiles : [],
       inputs: ['teammember1'],
-      hashTags : ['hackhub']
+      teamMembers : [],
+      hashTags : ['hackhub'],
+      selectedHackathon : '',
+      selectedTheme : '',
+      dropdownOpen: false,
+      addTeamMemberModal : false
     }
   }
+
+componentDidUpdate () {
+  //console.log(JSON.stringify(this.state));
+  console.log(JSON.stringify(this.props));
+}
 
   getScore = () => {
     this.setState({ geritScore: 3 });
@@ -74,19 +138,20 @@ class AddApp extends Component {
     }
   };
 
-    console.log("AddApp list state")
-    console.log(this.state)
+
+    console.log(JSON.stringify(this.state));
 
     let formData = new FormData();
     formData.append("title", this.state.projectName);
     formData.append("symbol", "./appJSONs/thumbnails/image1.jpg");
     formData.append("category", this.state.projectName);
     formData.append("teamname", this.state.teamName);
-    formData.append("teammember1", this.state.teammember1);
-    formData.append("teammember2", this.state.teammember2);
-    formData.append("teammember3", this.state.teammember3);
-    formData.append("teammember4", this.state.teammember4);
-    formData.append("teammember5", this.state.teammember5);
+
+    this.state.teamMembers.map((teammember, index) => {
+          debugger;
+          formData.append("teammember"+(index+1), this.state.teamMembers[index] && this.state.teamMembers[index].name);
+    })
+ 
     formData.append("purpose", this.state.projectDesc);
     formData.append("attachmentname1", this.state.attachmentname1);
     formData.append("attachment1", this.state.fileData1);
@@ -147,6 +212,16 @@ handleBlur = (e) => {
   console.log(this.state)
   }
 
+ addTeamMember() {
+     this.toggleAddTeamMember();
+     var teamSize = this.state.teamMembers.length;
+        if( teamSize < 5) {
+                var newTeamMember = {name: this.state.teamMemberName || ("Geek God"+ (teamSize+1)) , size :'50', email : this.state.teamMemberEmail || "example@website.com" , avatar: this.defaultAvatarList[teamSize] || avatar4}
+        	this.setState(prevState => ({ teamMembers: prevState.teamMembers.concat([newTeamMember]) }));
+	}
+
+  }
+
 createNewBadge(name) {
               return <Badge color="success" className="float-right">name</Badge>;
 }
@@ -198,10 +273,37 @@ handleFileUpload = (e) => {
   }
 }
 
+/*Dropdown methods */
+ onMouseEnter() {
+        this.setState({dropdownOpen: true});
+    }
 
+    onMouseLeave() {
+        this.setState({dropdownOpen: false});
+    }
+
+
+toggleAddTeamMember() {
+ this.setState({
+            addTeamMemberModal: !this.state.addTeamMemberModal
+        });
+}
   render() {
     return (
       <div className="wrapper">
+       <Modal isOpen={this.state.addTeamMemberModal} toggle={this.toggleAddTeamMember} className={this.props.className}>
+                    <ModalHeader toggle={this.toggleAddTeamMember}>Adding New Team Member...</ModalHeader>
+                    <ModalBody>
+			 <Label htmlFor="teamMemberName">Name</Label>
+                  <Input type="text" id="teamMemberName" name ="teamMemberName" placeholder="Geek God" onChange={this.handleChange} required />
+                <Label htmlFor="teamMemberEmail">Team Name</Label>
+                  <Input type="email" id="teamMemberEmail" name ="teamMemberEmail" placeholder="example@website.com" onChange={this.handleChange} required />
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="link" onClick={this.toggleAddTeamMember}>Cancel</Button>
+                        <Button color="primary" onClick={this.addTeamMember}>Add</Button>{' '}
+                    </ModalFooter>
+                </Modal>
         <header className="main-header">
           <a href="/dashboard" className="logo">
             <span className="logo-mini"><b>A</b>LT</span>
@@ -286,42 +388,77 @@ handleFileUpload = (e) => {
           </button>
               </div>
 
-        <section className="content">
-    <form role="form" name="addAppFrm">
-        <Row>
-          <Col xs="12" sm="6">
-            <Card>
+<section className="content">
+  <Form role="form" name ="addAppForm">
+    <Row>
+	<Col xs="12" sm="12" md="12">
+            {/*Project Details*/}
+	   <Card>
               <CardHeader>
                 <strong>Project Details</strong>
                 <small> Highlights</small>
               </CardHeader>
               <CardBody>
-                    <FormGroup>
-                      <Label htmlFor="projectName">Name</Label>
-                      <Input type="text" id="projectName"name="projectName" pattern="[A-Za-z]{3}" placeholder="Enter project name" onChange={this.handleChange} required />
-                      <FormFeedback>You will not be able to see this</FormFeedback>
-                    </FormGroup>
-		  <FormGroup>
-                      <Label>Project Id </Label>
-                      <p className="form-control-static">system-generated-id</p>
-                  </FormGroup>
-                    <FormGroup>
-                      <Label htmlFor="projectVersion">Version</Label>
-                      {/*}<Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1" pattern="(\d+\.)(\d+\.)(\d+\.)(\d)" onChange={this.handleChange}  onBlur={this.handleBlur} required />*/}
-                      <Input type="text" id="projectVersion" name="projectVersion" placeholder="0.0.1" pattern="(\d+\.)(\d+\.)(\d+\.)(\d)" onChange={this.handleChange} required />
-                    </FormGroup>
-		    <FormGroup >
-                      <Label htmlFor="projectDesc">Description</Label>
-                      <Input type="textarea" name="projectDesc" id="projectDesc" rows="9" maxLength = "500"
-                             placeholder="Keep it short and simple..." onChange={this.handleDescChange.bind(this)} />
-		      <p>Characters Left: {this.state.chars_left}</p>
+		<Row>
+		<Col xs="12" sm="12" md="3" mb="3">
+                  <Label for="hackathonName">Select Hackathon</Label>
+        		<Input type="select" name="hackathonName" id="hackathonName" 
+				placeholder= "Select a Hackathon"
+					onChange={event => this.setState({selectedHackathon: event.target.value})}>
+				    {
+					this.hackathonList.map(hackathon => {
+					    return (
+						<option key={hackathon.value} value={hackathon.label}>
+						    {hackathon.label}
+						</option>
+					    )
+					})
+				    }
+        		</Input>
+                </Col>
 
-                  </FormGroup>
+			{ this.state.selectedHackathon && <Col xs="12" sm="12" md="3" mb="3">
+			       <Label for="themeName">Select Themes</Label>
+				<Input type="select" name="themeName" id="themeName"
+					onChange={event => this.setState({selectedTheme: event.target.value})}>
+				    {
+					this.themeList[this.state.selectedHackathon].map(theme => {
+					    return (
+						<option key={theme.value} value={theme.label}>
+						    {theme.label}
+						</option>
+					    )
+					})
+				    }
+				</Input>
+      		    		</Col>
+			 }
+           	<Col xs="12" sm="12" md="3" mb="3">
+			<Label htmlFor="projectName">Project Name</Label>
+                        <Input type="text" id="projectName"name="projectName" maxLength="25"  placeholder="Enter project name" onChange={this.handleChange} required />
+			<FormFeedback>Oops! This name is alreadt taken.</FormFeedback>
+		</Col>
+		<Col xs="12" sm="12" md="3" mb="3">
+			 <Label htmlFor="projectVersion">Version</Label>
+                      	 <Input type="version" id="projectVersion" name="projectVersion" placeholder="1.2.333" pattern="^(([1-9]+\d*\.)+[1-9]+\d*)|[1-9]+\d*$" onChange={this.handleChange} required />
+		</Col>
+                </Row>
+                <Row>
+                <Col xs="12" sm="12" md="12" mb="12">
+			<Label htmlFor="projectDesc">Description</Label>
+                      	<Input type="textarea" name="projectDesc" id="projectDesc" rows="4" maxLength = "500"
+                             placeholder="Keep it short and simple..." onChange={this.handleDescChange.bind(this)} />
+		      	<p>Characters Left: {this.state.chars_left}</p>
+		</Col>
+                </Row>
               </CardBody>
             </Card>
-          </Col>
-          <Col xs="12" sm="6">
-            <Card>
+        </Col>
+    </Row>
+    <Row>
+     	<Col xs="12" sm="12" md="6">
+            {/*Team Members*/}
+	  <Card>
               <CardHeader>
                 <strong>Team</strong>
                 <small> Details</small>
@@ -329,49 +466,58 @@ handleFileUpload = (e) => {
               <CardBody>
                 <FormGroup>
                   <Label htmlFor="teamName">Team Name</Label>
-                  <Input type="text" id="teamName" name ="teamName" placeholder="Enter your team name" onChange={this.handleChange} required />
+                  <Input type="text" id="teamName" name ="teamName" placeholder="Enter team name" onChange={this.handleChange} required />
                 </FormGroup>
-                <FormGroup>
+
+<FormGroup>
                   <Label htmlFor="teamMembers">Team Members</Label>
-		   <div id="dynamicInput">
-                       {this.state.inputs.map(input => <Input  type="text" id={input} name={input} placeholder="Enter team member" onChange={this.handleChange} key={input}/>)}
-                   </div>
-                  <button type="button" id="addTeamMember" onClick={ () => this.appendInput() }>
-                    +
-               </button>
+		  
+ <Row style={{fontSize: '12px', textAlign : 'center'}}>
+
+{this.state.teamMembers.map(teamMember => <Col xs="4" id={teamMember.name} name={teamMember.name} key={teamMember.name} >
+                    <div className="widget-content p-0">
+		        <div className="widget-content-wrapper">
+		            <div className="widget-content-left mr-3">
+		                <div className="widget-content-left">
+		                    <img width={teamMember.size} className="rounded-circle" src={teamMember.avatar} alt="Avatar" />
+		                </div>
+		            </div>
+		            <div className="widget-content-left flex2">
+		                <div className="widget-heading">{teamMember.name}</div>
+		                <div className="widget-subheading opacity-7">{teamMember.email}</div>
+		            </div>
+		        </div>
+		    </div>
+</Col>
+)}
+
+{
+  (this.state.teamMembers.length < 5) && <Col xs="4" >
+<Button  className="btn btn-primary" onClick={ () => this.toggleAddTeamMember() }>
+                           <div className="widget-content-wrapper">
+		            <div className="widget-content-left mr-3">
+		                <div className="widget-content-left">
+		                    <img width={50} className="rounded-circle" src={addTeamIcon} alt="Add Tem Member" />
+		                </div>
+		            </div>
+		            <div className="widget-content-left flex2">
+		                <div className="widget-heading">Add Team Member</div>
+		            </div>
+		  	  </div>
+</Button>
+</Col>
+}
+    </Row>
+		
                 </FormGroup>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="12" md="6">
-            <Card>
-              <CardHeader>
-                <strong>Documents</strong> Attachments
-              </CardHeader>
-              <CardBody>
-                  <FormGroup>
-                  {/*<FormGroup className="files">*/}
-                      {/*}<Label htmlFor="file-multiple-input">Multiple File input</Label>*/}
-                      <Label htmlFor="attachmentname1">Attachment Description</Label>
-                      <Input type="text" id="attachmentname1" name ="attachmentname1" placeholder="Enter attachment description" onChange={this.handleChange} />
-                      <Label htmlFor="attachmentname1">Attachment</Label>
-                      <Input type="file" id="attachmenturl1" name="attachmenturl1" onChange={this.handleFileUpload} />
-                      {/*}<Input  type="file" id="file-multiple-input" name="file-multiple-input"  onChange={this.onFileSelect.bind(this)} multiple />
-                       <button type="button" className="btn btn-success pull-right" onClick={this.onFileUpload.bind(this)}>Upload</button>*/}
-
-                  </FormGroup>
 
               </CardBody>
-              { /*<CardFooter>
-                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
-                <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
-              </CardFooter> */}
             </Card>
-          </Col>
-          <Col xs="12" md="6">
-            <Card>
+            {/*Team Members End*/}
+        </Col>
+        <Col xs="12" sm="12" md="6">
+            {/*Categories*/}
+           <Card>
               <CardHeader>
                 <strong>Categories</strong>
               </CardHeader>
@@ -406,7 +552,50 @@ handleFileUpload = (e) => {
               </CardFooter>
             </Card>
 
+            {/*Categories End*/}
+        </Col>
+    </Row>
+  </Form>
+</section>
 
+        <section className="content">
+    <form role="form" name="addAppFrm">
+        <Row>
+          <Col xs="12" sm="6">
+         
+          </Col>
+          <Col xs="12" sm="6">
+            
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12" md="6">
+            <Card>
+              <CardHeader>
+                <strong>Documents</strong> Attachments
+              </CardHeader>
+              <CardBody>
+                  <FormGroup>
+                  {/*<FormGroup className="files">*/}
+                      {/*}<Label htmlFor="file-multiple-input">Multiple File input</Label>*/}
+                      <Label htmlFor="attachmentname1">Attachment Description</Label>
+                      <Input type="text" id="attachmentname1" name ="attachmentname1" placeholder="Enter attachment description" onChange={this.handleChange} />
+                      <Label htmlFor="attachmentname1">Attachment</Label>
+                      <Input type="file" id="attachmenturl1" name="attachmenturl1" onChange={this.handleFileUpload} />
+                      {/*}<Input  type="file" id="file-multiple-input" name="file-multiple-input"  onChange={this.onFileSelect.bind(this)} multiple />
+                       <button type="button" className="btn btn-success pull-right" onClick={this.onFileUpload.bind(this)}>Upload</button>*/}
+
+                  </FormGroup>
+
+              </CardBody>
+              { /*<CardFooter>
+                <Button type="submit" size="sm" color="primary"><i className="fa fa-dot-circle-o"></i> Submit</Button>
+                <Button type="reset" size="sm" color="danger"><i className="fa fa-ban"></i> Reset</Button>
+              </CardFooter> */}
+            </Card>
+          </Col>
+          <Col xs="12" md="6">
+        
 
           </Col>
         </Row>
@@ -418,6 +607,8 @@ handleFileUpload = (e) => {
     </form>
 </section>
 
+
+     
         </div>
         <footer className="main-footer">
           <div className="pull-right hidden-xs">
