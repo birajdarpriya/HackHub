@@ -38,8 +38,8 @@
   text-align:center;
   color: darkorange;
   font-size: 90px;
-
 }
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -47,7 +47,7 @@
   to {
     transform: rotate(360deg);
   }
-
+}
 .Five-Col {
      margin-left:4.166666667%
 }
