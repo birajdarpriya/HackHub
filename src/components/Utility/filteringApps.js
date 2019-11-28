@@ -10,6 +10,9 @@ export function filterApps(searchText, maxResults) {
       if (emoji.keywords.includes(searchText)) {
         return true;
       }
+     if (emoji.category.includes(searchText)) {
+        return true;
+      }
       return false;
     })
     .slice(0, maxResults);
@@ -61,12 +64,18 @@ export function fetchApplcationDetails(searchText) {
 }
 
 export function filterhackhublist(data, searchText, maxResults) {
+  searchText = searchText ? searchText.toLowerCase() : "";
   return data
     .filter(emoji => {
-      if (emoji.title.toLowerCase().includes(searchText.toLowerCase())) {
+      if (emoji.title && emoji.title.toLowerCase().includes(searchText)) {
         return true;
       }
-      if (emoji.category.includes(searchText)) {
+
+      if (emoji.category && emoji.category.toLowerCase().includes(searchText)) {
+        return true;
+      }
+
+      if (emoji.keywords && emoji.keywords.toLowerCase().includes(searchText)) {
         return true;
       }
       return false;

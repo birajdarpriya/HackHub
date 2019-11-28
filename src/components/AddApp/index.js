@@ -50,15 +50,15 @@ this.businessFunctionList = [ "Banking" , "Core Banking", "Digital Banking", "Cu
       { value: "codegrind1", label: "Code Grind 1.0" },
       { value: "codegrind2", label: "Code Grind 2.0" },
       { value: "punetoparis", label: "Pune To Paris" },
-      { value: "anybodycancode", label: "Any Body Can Code" }
+      { value: "anybodycancode", label: "Any <body> Can Code" }
     ];
 
    this.themeList = {
      "Select a Hackathon" : [],
      "Hackademy 2019" :   [
-      { value: "hackademy2019ai", label: "Artificial Intelligence" },
-      { value: "hackademy2019ml", label: "Machine Learning" },
-      { value: "hackademy2019dataengg", label: "Data Engineering" }
+      { value: "hackademy2019ai", label: "Hackademy 2019 -AI" },
+      { value: "hackademy2019ml", label: "Hackademy 2019 - Machine Learning" },
+      { value: "hackademy2019dataengg", label: "Hackademy 2019 - Data Engineering" }
     ],
     
 "Code Grind 1.0" :   [
@@ -78,7 +78,7 @@ this.businessFunctionList = [ "Banking" , "Core Banking", "Digital Banking", "Cu
       { value: "punetoparisml", label: "PTP -Machine Learning" },
       { value: "punetoparisdataengg", label: "PTP -Data Engineering" }
     ],
-"Any Body Can Code" :   [
+"Any <body> Can Code" :   [
       { value: "anybodycancodeai", label: " ABCC - Artificial Intelligence" },
       { value: "anybodycancodeml", label: "ABCC - Machine Learning" },
       { value: "anybodycancodedataengg", label: "ABCC -Data Engineering" }
@@ -117,7 +117,7 @@ this.businessFunctionList = [ "Banking" , "Core Banking", "Digital Banking", "Cu
 
 componentDidUpdate () {
   //console.log(JSON.stringify(this.state));
-  console.log(JSON.stringify(this.props));
+ // console.log(JSON.stringify(this.props));
 }
 
   getScore = () => {
@@ -156,17 +156,31 @@ componentDidUpdate () {
     console.log(JSON.stringify(this.state));
 
     let formData = new FormData();
-    formData.append("title", this.state.projectName);
-    formData.append("symbol", "./appJSONs/thumbnails/image1.jpg");
-    formData.append("category", this.state.projectName);
-    formData.append("teamname", this.state.teamName);
 
+    var keywordsList = this.state.hashTags;
+    formData.append("hackathonName", this.state.selectedHackathon);
+    formData.append("category", this.state.selectedTheme);
+    formData.append("title", this.state.projectName);
+    formData.append("symbol", this.state.projectVersion);
+    formData.append("purpose", this.state.projectDesc);
+
+
+
+    keywordsList.push(this.state.selectedHackathon, this.state.selectedTheme, this.state.projectName, this.state.teamName )
+    /*Team Details */
+    formData.append("teamname", this.state.teamName);
     this.state.teamMembers.map((teammember, index) => {
           debugger;
-          formData.append("teammember"+(index+1), this.state.teamMembers[index] && this.state.teamMembers[index].name);
+          formData.append("teammember"+(index+1), teammember && teammember.name);
+          formData.append("teammemberemail"+(index+1), teammember && teammember.email);
+          keywordsList.push(teammember.name, teammember.email);
     })
- 
-    formData.append("purpose", this.state.projectDesc);
+    
+    /*Keywords*/ 
+
+   
+    formData.append("keywords", keywordsList.join(' ') );
+    /*Attachments*/
     formData.append("attachmentname1", this.state.attachmentname1);
     formData.append("attachment1", this.state.fileData1);
 
@@ -520,13 +534,16 @@ toggleDisplayModal(event) {
               {/* <li className="header">MAIN NAVIGATION</li> */}
               <li className="active treeview">
                 <a href="#">
-                  <i className="fa fa-dashboard"></i> <span>Departments</span>
+                  <i className="fa fa-dashboard"></i> <span>Hackathons</span>
                   <span className="pull-right-container">
                   </span>
                 </a>
                 <ul className="treeview-menu">
-                  <li className="active"><a href="index.html"><i className="fa fa-circle-o"></i> RBWM</a></li>
-                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> GBM</a></li>
+                  <li><a href="index.html"><i className="fa fa-circle-o"></i> Hackademy 2019</a></li>
+                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Code Grind 1.0</a></li>
+                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Code Grind 2.0</a></li>
+                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Pune to Paris</a></li>
+                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Anybody Can Code</a></li>
                 </ul>
               </li>
               <li className="treeview">
@@ -636,7 +653,7 @@ toggleDisplayModal(event) {
             </Card>
         </Col>
     </Row>
-    <Row>
+    <Row className="mt-3">
      	<Col xs="12" sm="12" md="6">
             {/*Team Members*/}
 	  <Card>
@@ -766,7 +783,7 @@ toggleDisplayModal(event) {
             
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-3">
           <Col xs="12" md="6">
             <Card>
               <CardHeader className = "bg-light-blue">

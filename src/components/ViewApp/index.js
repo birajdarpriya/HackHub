@@ -25,6 +25,11 @@ import {
   Row,
 } from 'reactstrap';
 
+import avatar1 from '../../assets/utils/images/avatars/avatar1.png';
+import avatar2 from '../../assets/utils/images/avatars/avatar2.png';
+import avatar3 from '../../assets/utils/images/avatars/avatar3.png';
+import avatar4 from '../../assets/utils/images/avatars/avatar4.png';
+import avatar5 from '../../assets/utils/images/avatars/avatar5.png';
 // import '../../theme/bower_components/jquery/dist/jquery.min.js';
 import { addNewApp} from "../Utility/filteringApps";
 //import { Redirect } from 'react-router-dom';
@@ -59,7 +64,8 @@ class ViewApp extends Component {
       teammember5: this.props.location.state.data[0].teammember5,
       projectDesc: decode(this.props.location.state.data[0].purpose),
       attachmentname1: this.props.location.state.data[0].attachmentname1,
-      attachmenturl1: this.props.location.state.data[0].attachmenturl1
+      attachmenturl1: this.props.location.state.data[0].attachmenturl1,
+teamMembers : [{name: "abc", email: "123"}]
 
       //attachment1: this.props.location.state.data[0].fileData1
     }
@@ -334,27 +340,42 @@ renderRedirect = () => {
   render() {
     const id = this.props.location.state.data[0].id;
     const projectName = this.props.location.state.data[0].title;
-    const symbol = "./appJSONs/thumbnails/image1.jpg";
-    const category = this.props.location.state.data[0].title;
-    const teamName = this.props.location.state.data[0].teamname;
-    const teammember1 = this.props.location.state.data[0].teammember1;
-    let teammember2 = this.props.location.state.data[0].teammember2;
-    let teammember3 = this.props.location.state.data[0].teammember3;
-    let teammember4 = this.props.location.state.data[0].teammember4;
-    let teammember5 = this.props.location.state.data[0].teammember5;
-    const projectDesc = this.props.location.state.data[0].purpose;
-    const attachmentname1 = this.props.location.state.data[0].attachmentname1;
-    const attachmenturl1 = this.props.location.state.data[0].attachmenturl1;
+    var version = this.props.location.state.data[0].symbol;
+    version = version.indexOf(".jpg") ? "1.2.0" : version;
 
-    if (typeof teammember2 !== 'undefined') teammember2 = null;
-    if (typeof teammember3 !== 'undefined') teammember3 = null;
-    if (typeof teammember4 !== 'undefined') teammember4 = null;
-    if (typeof teammember5 !== 'undefined') teammember5 = null;
+    const applicationData = this.props.location.state.data[0];
+    const category = applicationData.title;
+    const teamName = applicationData.teamname;
+    const defaultAvatarList = [avatar1, avatar2, avatar3, avatar4, avatar5]
+    debugger;
+    var teamMembers = [];
+     for (var i=1; i<6; i++) {
+          var teamMember = applicationData["teammember"+i] && {name : applicationData["teammember"+i] , 
+		     email :  (applicationData["teammemberemail"+i] ? applicationData["teammemberemail"+i] : (applicationData.teammember1+ "@example.com")), avatar : defaultAvatarList[i]};
+          teamMember && teamMembers.push(teamMember);
+      }
+
+      
+/*teamMembers[1] = applicationData.teammember2 && {name : applicationData.teammember2 , 
+		     email :  (applicationData.teammemberemail2 ? applicationData.teammemberemail2 : (applicationData.teammember2+ "@example.com")), avatar: avatar2};
+teamMembers[2] = applicationData.teammember3 && {name : applicationData.teammember3 , 
+		     email :  (applicationData.teammemberemail3 ? applicationData.teammemberemail3 : (applicationData.teammember3+ "@example.com")), avatar : avatar3};
+teamMembers[3] = applicationData.teammember4 && {name : applicationData.teammember4 , 
+		     email :  (applicationData.teammemberemail4 ? applicationData.teammemberemail4 : (applicationData.teammember4+ "@example.com")), avatar : avatar4 };
+teamMembers[1] = applicationData.teammember5 && {name : applicationData.teammember5 , 
+		     email :  (applicationData.teammemberemail5 ? applicationData.teammemberemail5 : (applicationData.teammember5+ "@example.com")), avatar:avatar5 };*/
+    const projectDesc = applicationData.purpose;
+  debugger;
+    const attachmentname1 = (!applicationData.attachmentname1 || applicationData.attachmentname1 === "undefined") ? "Attachment" : applicationData.attachmentname1 ;
+    const attachmenturl1 = applicationData.attachmenturl1;
+    const keywords = applicationData.keywords && applicationData.keywords.split(' ') || ["hackathon"];
+ 
 
 
 
 
     return (
+
       <div className="wrapper">
       {this.renderRedirect()}
         <header className="main-header">
@@ -397,8 +418,11 @@ renderRedirect = () => {
                   </span>
                 </a>
                 <ul className="treeview-menu">
-                  <li className="active"><a href="index.html"><i className="fa fa-circle-o"></i> RBWM</a></li>
-                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> GBM</a></li>
+                 <li><a href="index.html"><i className="fa fa-circle-o"></i> Hackademy 2019</a></li>
+                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Code Grind 1.0</a></li>
+                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Code Grind 2.0</a></li>
+                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Pune to Paris</a></li>
+                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Anybody Can Code</a></li>
                 </ul>
               </li>
               <li className="treeview">
@@ -427,22 +451,60 @@ renderRedirect = () => {
               View your application
             {/* <small>Preview</small> */}
             </h1>
-            {/* <ol className="breadcrumb">
+          </section>
+     {/* <ol className="breadcrumb">
               <li><a href="#"><i className="fa fa-dashboard"></i> Home</a></li>
               <li><a href="#">Forms</a></li>
               <li className="active">General Elements</li>
             </ol> */}
-          </section>
-          <div class="pull-right box-tools">
+
+         {/* <div class="pull-right box-tools">
 
           <button type="button" class="btn btn-success btn-sm" onClick={this.onCloseApp}><i class="fa fa-times"></i>
           </button>
-              </div>
-        <section className="content">
+              </div> */}
+        <section className="content"><Row>
+  <Col xs="12" sm="12" md="12">
+            {/*Categories*/}
+           <Card>
+              <CardHeader className = "widget-user-header bg-yellow">
+
+
+				<div class="pull-right box-tools">
+				{/*<button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
+				</button>*/}
+				<button type="button" class="btn btn-success btn-sm" onClick={this.onCloseApp}><i class="fa fa-times"></i>
+				</button>
+			      </div>
+
+      				<div class="widget-user-image">
+        				<img class="img-circle" src="../dist/img/user7-128x128.jpg" alt="User Avatar" />
+      				</div>
+				<h3 class="widget-user-username">{projectName}</h3>
+      				<h5 class="widget-user-desc">{version}</h5>
+
+
+              </CardHeader>
+              <CardBody>
+                
+                 <Row>
+                 <Col xs="12" sm="12" md="12">
+                  <div>
+                   <p>{projectDesc}</p>
+                  </div>
+		  
+                  </Col>  </Row>           </CardBody>
+            </Card>
+
+            {/*Categories End*/}
+        </Col>
+        </Row>
+
+
     <form role="form" name="addAppFrm">
-        <Row>
+        <Row className="mt-3">
           <Col xs="12" sm="6">
-            <Card>
+            {/*<Card>
               <CardHeader>
                 <strong>Project Details</strong>
                 <small> Highlights</small>
@@ -460,11 +522,10 @@ renderRedirect = () => {
 
                   </FormGroup>
               </CardBody>
-            </Card>
-          </Col>
-          <Col xs="12" sm="6">
-            <Card>
-              <CardHeader>
+            </Card> */}
+
+  <Card>
+              <CardHeader className = "bg-light-blue">
                 <strong>Team</strong>
                 <small> Details</small>
               </CardHeader>
@@ -473,22 +534,40 @@ renderRedirect = () => {
                   <Label htmlFor="teamName">Team Name</Label>
                   <p>{teamName}</p>
                 </FormGroup>
-                <FormGroup>
+
+<FormGroup>
                   <Label htmlFor="teamMembers">Team Members</Label>
-		                <p>{teammember1}</p>
-                    <p>{teammember2}</p>
-                    <p>{teammember3}</p>
-                    <p>{teammember4}</p>
-                    <p>{teammember5}</p>
+		  
+ <Row style={{fontSize: '12px', textAlign : 'center'}}>
+
+{ teamMembers && teamMembers.length >0 && teamMembers.map(teamMember => <Col xs="4" id={teamMember.name} name={teamMember.name} key={teamMember.name} >
+                    <div className="widget-content p-0">
+		        <div className="widget-content-wrapper">
+		            <div className="widget-content-left mr-3">
+		                <div className="widget-content-left">
+		                    <img width="50" className="rounded-circle" src={teamMember.avatar} alt="Avatar" />
+		                </div>
+		            </div>
+		            <div className="widget-content-left flex2">
+		                <div className="widget-heading">{teamMember.name}</div>
+		                <div className="widget-subheading opacity-7">{teamMember.email}</div>
+		            </div>
+		        </div>
+		    </div>
+</Col>
+)}
+
+
+    </Row>
                 </FormGroup>
+
               </CardBody>
             </Card>
           </Col>
-        </Row>
-        <Row>
-          <Col xs="12" md="6">
+
+<Col xs="12" md="6">
             <Card>
-              <CardHeader>
+              <CardHeader className = "bg-light-blue">
                 <strong>Documents</strong> Attachments
               </CardHeader>
               <CardBody>
@@ -514,43 +593,36 @@ renderRedirect = () => {
               </CardFooter> */}
             </Card>
           </Col>
-          <Col xs="12" md="6">
-            <Card>
-              <CardHeader>
+</Row>
+<Row className="mt-3">
+  <Col xs="12" sm="12" md="12">
+            {/*Categories*/}
+           <Card>
+              <CardHeader className = "bg-light-blue">
                 <strong>Categories</strong>
               </CardHeader>
               <CardBody>
+                
+                 <Row>
+                 <Col xs="12" sm="12" md="12">
                   <FormGroup>
-                   <div id="hashTagsDiv">
+                   <div id="hashTagsDiv"> 
+                       {keywords.map(hashTag => <Badge style={{fontSize : "90%"}} className="mb-2 mr-2" color="dark" 
+				      type="badge" id="hashTags" key={hashTag} onDoubleClick={ (event) =>this.deleteHashTags(event) }>{hashTag} </Badge>
+                        )}
 
                    </div>
-
-
-		       <div className="card-header-actions">
-                  	  {this.componentList}
-               	       </div>
+                     
 		   </FormGroup>
-		   <FormGroup >
-                        <Label htmlFor="prependedInput">Keywords</Label>
-                        <div className="controls">
-                          <InputGroup className="input-prepend">
-                            <InputGroupAddon addonType="prepend">
-                              <InputGroupText>#</InputGroupText>
-                            </InputGroupAddon>
-                            <Input id="prependedInput" size="16" type="text" onKeyPress={ (event) =>this.appendHashTags(event) }/>
-                          </InputGroup>
-                          <p className="help-block">Keep adding keywords and hashtags</p>
-                        </div>
-
-                  </FormGroup>
-
-              </CardBody>
+		  
+                  </Col>  </Row>           </CardBody>
               <CardFooter>
 
               </CardFooter>
             </Card>
 
-          </Col>
+            {/*Categories End*/}
+        </Col>
         </Row>
         <div className="box-footer">
             {/*<button type="button" className="btn btn-primary" onClick={this.getScore}>Check Gerit Score</button>{this.state.getScore}*/}

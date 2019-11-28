@@ -18,8 +18,8 @@ class HackHubList extends PureComponent {
 
   render() {
     return (
-      <div className="row">
-        {this.props.searchResults.map(result => (
+        this.props.searchResults.map(result => (
+
           <HackHubListRow
             key={result.id}
             symbol={result.symbol}
@@ -27,11 +27,13 @@ class HackHubList extends PureComponent {
             title={result.title}
             teamname={result.teamname}
             id={result.id}
+            category={result.category}
+            hackathonName ={result.hackathonName}
             onSelectApp = {this.onSelectApp}
           />
 
-        ))}
-      </div>
+        ))
+
     );
   }
 }

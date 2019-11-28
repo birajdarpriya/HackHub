@@ -27,7 +27,7 @@ class Dashboard extends Component {
   onLoad = (data) => {
     this.setState({
       apps: data,
-      filterApps: filterhackhublist(data, this.state.searchString, 20),
+      filterApps: filterhackhublist(data, this.state.searchString, 80),
       appDetailsData: fetchApplcationDetails("Fund Transfer"),
       searchString: "",
       showApp: false,
@@ -100,6 +100,13 @@ class Dashboard extends Component {
     });
   }
 
+handleCategorySelected = selectedHackathon => {
+     this.setState({
+      filterApps: filterhackhublist(this.state.apps, selectedHackathon.target.id, 20),
+      searchString: selectedHackathon.target.id
+    });
+
+  }
   onAdd = () => {
     this.props.history.push("/add-app");
   }
@@ -168,13 +175,16 @@ class Dashboard extends Component {
               {/* <li className="header">MAIN NAVIGATION</li> */}
               <li className="active treeview">
                 <a href="#">
-                  <i className="fa fa-dashboard"></i> <span>Departments</span>
+                  <i className="fa fa-dashboard"></i> <span>Hackathons</span>
                   <span className="pull-right-container">
                   </span>
                 </a>
                 <ul className="treeview-menu">
-                  <li className="active"><a href="index.html"><i className="fa fa-circle-o"></i> RBWM</a></li>
-                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> GBM</a></li>
+                  <li><a href="#" id = "Hackademy 2019" name="Hackademy 2019" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Hackademy 2019</a></li>
+<li><a href="#" id = "Code Grind 1.0" name="Code Grind 1.0" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Code Grind 1.0</a></li>
+<li><a href="#" id = "Code Grind 2.0" name="Code Grind 2.0" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Code Grind 2.0</a></li>
+<li><a href="#" id = "Pune to Paris" name="Pune to Paris" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Pune to Paris</a></li>
+<li><a href="#" id = "Any <body> Can Code" name="Any <body> Can Code" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Any &lt; body &gt; Can Code</a></li>
                 </ul>
               </li>
               <li className="treeview">
@@ -203,20 +213,20 @@ class Dashboard extends Component {
             <section className="content-header">
               <h1>
                 Search </h1>
-              <SearchApp textChange={this.handleSearchChange} />
+              <SearchApp textChange={this.handleSearchChange} searchString= {this.state.searchString}/>
             </section>
 
             <section className="content-header">
               <h1>
-                Featured Apps {this.state.searchSting}
-                <small>showing all apps</small>
+                Featured Apps
+                <small> showing results for <span className="font-italic"> {this.state.searchString ? this.state.searchString :" all apps"}</span></small>
               </h1>
             </section>
 
             <section className="content">
               <div className="row">
                 { this.state.filterApps &&
-                <HackHubList onSelectApp={this.handleAppSelected} searchResults={this.state.filterApps} />
+                <HackHubList onSelectApp={this.handleAppSelected} searchResults={this.state.filterApps}/>
                 }
               </div>
             </section>
