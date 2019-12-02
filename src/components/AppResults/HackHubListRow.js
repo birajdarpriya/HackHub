@@ -14,9 +14,9 @@ constructor() {
  this.colorMap = {
        "Hackademy 2019" : {color : "bg-aqua", icon : "ion-bag"},
        "Code Grind 1.0" : {color : "bg-red", icon : "ion-stats-bars"},
-       "Code Grind 2.0" : {color : "bg-orange", icon : "ion-person-add"},
-       "Pune to Paris" : {color : "bg-yellow", icon : "ion-pie-graph"},
-       "Any <body> Can Code" : {color : "bg-green", icon : "ion-compass"},
+       "Code Grind 2.0" : {color : "bg-yellow", icon : "ion-person-add"},
+       "Pune To Paris" : {color : "bg-green", icon : "ion-pie-graph"},
+       "Any <body> Can Code" : {color : "bg-purple", icon : "ion-compass"},
        "default" : {color : "bg-gray", icon : "ion-bookmark"},
        null : {color : "bg-gray", icon : "ion-bookmark"},
  }

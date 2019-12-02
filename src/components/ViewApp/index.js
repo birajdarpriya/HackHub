@@ -338,16 +338,17 @@ renderRedirect = () => {
   }
 
   render() {
-    const id = this.props.location.state.data[0].id;
-    const projectName = this.props.location.state.data[0].title;
-    var version = this.props.location.state.data[0].symbol;
+    
+    const applicationData = this.props.location.state.data[0];
+
+    const id = applicationData.id;
+    const projectName = applicationData.title;
+    var version = applicationData.symbol;
     version = version.indexOf(".jpg") ? "1.2.0" : version;
 
-    const applicationData = this.props.location.state.data[0];
-    const category = applicationData.title;
     const teamName = applicationData.teamname;
     const defaultAvatarList = [avatar1, avatar2, avatar3, avatar4, avatar5]
-    debugger;
+
     var teamMembers = [];
      for (var i=1; i<6; i++) {
           var teamMember = applicationData["teammember"+i] && {name : applicationData["teammember"+i] , 
@@ -355,17 +356,20 @@ renderRedirect = () => {
           teamMember && teamMembers.push(teamMember);
       }
 
-      
-/*teamMembers[1] = applicationData.teammember2 && {name : applicationData.teammember2 , 
-		     email :  (applicationData.teammemberemail2 ? applicationData.teammemberemail2 : (applicationData.teammember2+ "@example.com")), avatar: avatar2};
-teamMembers[2] = applicationData.teammember3 && {name : applicationData.teammember3 , 
-		     email :  (applicationData.teammemberemail3 ? applicationData.teammemberemail3 : (applicationData.teammember3+ "@example.com")), avatar : avatar3};
-teamMembers[3] = applicationData.teammember4 && {name : applicationData.teammember4 , 
-		     email :  (applicationData.teammemberemail4 ? applicationData.teammemberemail4 : (applicationData.teammember4+ "@example.com")), avatar : avatar4 };
-teamMembers[1] = applicationData.teammember5 && {name : applicationData.teammember5 , 
-		     email :  (applicationData.teammemberemail5 ? applicationData.teammemberemail5 : (applicationData.teammember5+ "@example.com")), avatar:avatar5 };*/
+      const colorMap = {
+       "Hackademy 2019" : {color : "bg-aqua", icon : "ion-bag"},
+       "Code Grind 1.0" : {color : "bg-red", icon : "ion-stats-bars"},
+       "Code Grind 2.0" : {color : "bg-yellow", icon : "ion-person-add"},
+       "Pune To Paris" : {color : "bg-green", icon : "ion-pie-graph"},
+       "Any <body> Can Code" : {color : "bg-purple", icon : "ion-compass"},
+       "default" : {color : "bg-gray", icon : "ion-bookmark"},
+       null : {color : "bg-gray", icon : "ion-bookmark"},
+     }
+
+    const hackathonName = applicationData.hackathonName;
+    const colorCode = colorMap[hackathonName] ||  colorMap["default"] ;
+    const category = applicationData.category;
     const projectDesc = applicationData.purpose;
-  debugger;
     const attachmentname1 = (!applicationData.attachmentname1 || applicationData.attachmentname1 === "undefined") ? "Attachment" : applicationData.attachmentname1 ;
     const attachmenturl1 = applicationData.attachmenturl1;
     const keywords = applicationData.keywords && applicationData.keywords.split(' ') || ["hackathon"];
@@ -417,12 +421,12 @@ teamMembers[1] = applicationData.teammember5 && {name : applicationData.teammemb
                   <span className="pull-right-container">
                   </span>
                 </a>
-                <ul className="treeview-menu">
-                 <li><a href="index.html"><i className="fa fa-circle-o"></i> Hackademy 2019</a></li>
-                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Code Grind 1.0</a></li>
-                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Code Grind 2.0</a></li>
-                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Pune to Paris</a></li>
-                  <li><a href="index2.html"><i className="fa fa-circle-o"></i> Anybody Can Code</a></li>
+               <ul className="treeview-menu">
+                  <li><a href="#" id = "Hackademy 2019" name="Hackademy 2019" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Hackademy 2019</a></li>
+<li><a href="#" id = "Code Grind 1.0" name="Code Grind 1.0" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Code Grind 1.0</a></li>
+<li><a href="#" id = "Code Grind 2.0" name="Code Grind 2.0" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Code Grind 2.0</a></li>
+<li><a href="#" id = "Pune to Paris" name="Pune to Paris" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Pune to Paris</a></li>
+<li><a href="#" id = "Any <body> Can Code" name="Any <body> Can Code" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Any &lt; body &gt; Can Code</a></li>
                 </ul>
               </li>
               <li className="treeview">
@@ -467,14 +471,24 @@ teamMembers[1] = applicationData.teammember5 && {name : applicationData.teammemb
   <Col xs="12" sm="12" md="12">
             {/*Categories*/}
            <Card>
-              <CardHeader className = "widget-user-header bg-yellow">
+              <CardHeader className = {"widget-user-header " +colorCode.color}>
 
 
 				<div class="pull-right box-tools">
 				{/*<button type="button" class="btn btn-success btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
 				</button>*/}
-				<button type="button" class="btn btn-success btn-sm" onClick={this.onCloseApp}><i class="fa fa-times"></i>
+				<button type="button" class="btn btn-success btn-sm" onClick={this.onCloseApp}><i className="fa fa-times"></i>
 				</button>
+                                <div className="pull-left mr-4 small-box">
+                                <div className="inner" >
+                                <h4 >{hackathonName}</h4>
+				<h5 >{category}</h5>
+                                </div>
+                                <div className="icon">
+			          <i className={"icon " + colorCode.icon}></i>
+			        </div>
+                                
+                                </div>
 			      </div>
 
       				<div class="widget-user-image">
@@ -525,7 +539,7 @@ teamMembers[1] = applicationData.teammember5 && {name : applicationData.teammemb
             </Card> */}
 
   <Card>
-              <CardHeader className = "bg-light-blue">
+              <CardHeader className = {colorCode.color}>
                 <strong>Team</strong>
                 <small> Details</small>
               </CardHeader>
@@ -567,7 +581,7 @@ teamMembers[1] = applicationData.teammember5 && {name : applicationData.teammemb
 
 <Col xs="12" md="6">
             <Card>
-              <CardHeader className = "bg-light-blue">
+              <CardHeader className = {colorCode.color}>
                 <strong>Documents</strong> Attachments
               </CardHeader>
               <CardBody>
@@ -598,7 +612,7 @@ teamMembers[1] = applicationData.teammember5 && {name : applicationData.teammemb
   <Col xs="12" sm="12" md="12">
             {/*Categories*/}
            <Card>
-              <CardHeader className = "bg-light-blue">
+              <CardHeader className = {colorCode.color}>
                 <strong>Categories</strong>
               </CardHeader>
               <CardBody>

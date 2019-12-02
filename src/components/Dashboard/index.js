@@ -183,7 +183,7 @@ handleCategorySelected = selectedHackathon => {
                   <li><a href="#" id = "Hackademy 2019" name="Hackademy 2019" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Hackademy 2019</a></li>
 <li><a href="#" id = "Code Grind 1.0" name="Code Grind 1.0" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Code Grind 1.0</a></li>
 <li><a href="#" id = "Code Grind 2.0" name="Code Grind 2.0" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Code Grind 2.0</a></li>
-<li><a href="#" id = "Pune to Paris" name="Pune to Paris" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Pune to Paris</a></li>
+<li><a href="#" id = "Pune To Paris" name="Pune To Paris" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Pune To Paris</a></li>
 <li><a href="#" id = "Any <body> Can Code" name="Any <body> Can Code" onClick ={this.handleCategorySelected}><i className="fa fa-circle-o"></i> Any &lt; body &gt; Can Code</a></li>
                 </ul>
               </li>
